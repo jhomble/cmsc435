@@ -11,17 +11,6 @@ angular.module('myApp.view2', ['ngRoute'])
 
 .controller('View2Ctrl', ['$scope', function($scope) {
 
-    // Here are a list of variables to show buttons or change text
-    // My convention right now is e1_1 being elevator 1 on floor 1 
-    $scope.e1_1 = true;
-    $scope.e2_1 = true;
-    $scope.e1_2 = false;
-    $scope.e2_2 = false;
-    $scope.e1_3 = false;
-    $scope.e2_3 = false;
-    $scope.e1_4 = false;
-    $scope.e2_4 = false;
-
     $scope.e1Action = "text to show elevator 1 action"
     $scope.e2Action = "text to show elevator 2 action" 
 
@@ -35,6 +24,14 @@ angular.module('myApp.view2', ['ngRoute'])
       'floor': 1,
       'direction': 1
     };
+
+    this.isE1AtFloor = function(f) {
+	return f == e1.floor;
+    }
+
+    this.isE2AtFloor = function(f) {
+	return f == e1.floor;
+    }
 
     // Sets floor of elevator "closest" to call
     //    - "closest" determined by FS value
