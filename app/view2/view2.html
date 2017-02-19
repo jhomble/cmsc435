@@ -2,10 +2,18 @@
 .vertical_line{height:230px; width:5px;background:#000;}
 </style>
 
-<div class="row">
+<div class="row" ng-controller = "View2Ctrl as v2">
     <div class="row">
       <div class="col-xs-12">
         <h2 style="text-align: center">Elevator Simulator</h2>
+      </div>
+    </div>
+
+    <!--Show Current Elevator Floor (This should eventually get removed!)-->
+    <div class="row">
+      <div class="col-xs-12">
+        <h4 style="text-align: center">E1: {{ v2.getE1Floor() }}</h4>
+        <h4 style="text-align: center">E2: {{ v2.getE2Floor() }}</h4>
       </div>
     </div>
 
@@ -97,8 +105,8 @@
         </div>
         <!--Floor Buttons-->
         <div class="col-xs-3">
-          <button type="submit" class="btn btn-primary">Up</button>
-          <button type="submit" class="btn btn-info">Down</button>
+          <button type="submit" class="btn btn-primary" ng-click="v2.answerCall(4, 1)">Up</button>
+          <button type="submit" class="btn btn-info" ng-click="v2.answerCall(4, 0)">Down</button>
         </div>
       </div>
     </div>
@@ -168,8 +176,8 @@
         </div>
         <!--Floor Buttons-->
         <div class="col-xs-3">
-          <button type="submit" class="btn btn-primary">Up</button>
-          <button type="submit" class="btn btn-info">Down</button>
+          <button type="submit" class="btn btn-primary" ng-click="v2.answerCall(3, 1)">Up</button>
+          <button type="submit" class="btn btn-info" ng-click="v2.answerCall(3, 0)">Down</button>
         </div>
       </div>
     </div>
@@ -238,8 +246,8 @@
         </div>
         <!--Floor Buttons-->
         <div class="col-xs-3">
-          <button type="submit" class="btn btn-primary">Up</button>
-          <button type="submit" class="btn btn-info">Down</button>
+          <button type="submit" class="btn btn-primary" ng-click="v2.answerCall(2, 1)">Up</button>
+          <button type="submit" class="btn btn-info" ng-click="v2.answerCall(2, 0)">Down</button>
         </div>
       </div>
     </div>
@@ -308,8 +316,8 @@
         </div>
         <!--Floor Buttons-->
         <div class="col-xs-3">
-          <button type="submit" class="btn btn-primary">Up</button>
-          <button type="submit" class="btn btn-info">Down</button>
+          <button type="submit" class="btn btn-primary" ng-click="v2.answerCall(1, 1)">Up</button>
+          <button type="submit" class="btn btn-info" ng-click="v2.answerCall(1, 0)">Down</button>
         </div>
       </div>
     </div>
