@@ -38,20 +38,20 @@ angular.module('myApp.view2', ['ngRoute'])
     this.answerCall = function(fl, dir) {
 
 	var getFS = function(f, d, ef, ed) {
-    var fs = 4 - Math.abs(ef - f);
+	    var fs = 4 - Math.abs(ef - f);
 
-    if ((ed == 1 && (ef - f) < 0) || (ed == 0 && (ef-f) > 0)){
-      fs = 1;
-        } else {
-      if (ed == d) {
-          fs += 2;
-      } else {
-          fs ++;
-      }
-        }
+	    if ((ed == 1 && (ef - f) < 0) || (ed == 0 && (ef-f) > 0)){
+		fs = 1;
+            } else {
+		if (ed == d) {
+		    fs += 2;
+		} else {
+		    fs ++;
+		}
+            }
 
-        return fs;
-    };
+            return fs;
+	};
 
 	var fs1 = getFS(fl,dir, e1.floor, e1.direction);
 	var fs2 = getFS(fl,dir, e2.floor, e2.direction);	    
