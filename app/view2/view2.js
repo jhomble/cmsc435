@@ -30,7 +30,7 @@ angular.module('myApp.view2', ['ngRoute'])
     }
 
     this.isE2AtFloor = function(f) {
-	return f == e1.floor;
+	return f == e2.floor;
     }
 
     // Sets floor of elevator "closest" to call
