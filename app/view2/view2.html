@@ -10,10 +10,10 @@
     </div>
 
     <!--Show Current Elevator Floor (This should eventually get removed!)-->
-    <div class="row">
+    <div class="row" ng-show="v2.debug">
       <div class="col-xs-12">
-        <h4 style="text-align: center">E1: {{ v2.getE1Floor() }}</h4>
-        <h4 style="text-align: center">E2: {{ v2.getE2Floor() }}</h4>
+        <h4 style="text-align: center">E1: f = {{ v2.getE1Floor() }}, d = {{ v2.getE1Direction() }}</h4>
+        <h4 style="text-align: center">E2: f = {{ v2.getE2Floor() }}, d = {{ v2.getE2Direction() }}</h4>
       </div>
     </div>
 
@@ -107,7 +107,7 @@
         </div>
         <!--Floor Buttons-->
         <div class="col-xs-3">
-          <button type="submit" class="btn btn-primary" ng-click="v2.answerCall(4, 1)">Up</button>
+          <!--<button type="submit" class="btn btn-primary" ng-click="v2.answerCall(4, 1)">Up</button>-->
           <button type="submit" class="btn btn-info" ng-click="v2.answerCall(4, 0)">Down</button>
         </div>
       </div>
@@ -325,7 +325,7 @@
         <!--Floor Buttons-->
         <div class="col-xs-3">
           <button type="submit" class="btn btn-primary" ng-click="v2.answerCall(1, 1)">Up</button>
-          <button type="submit" class="btn btn-info" ng-click="v2.answerCall(1, 0)">Down</button>
+          <!--<button type="submit" class="btn btn-info" ng-click="v2.answerCall(1, 0)">Down</button>-->
         </div>
       </div>
     </div>
