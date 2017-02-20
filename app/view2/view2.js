@@ -42,6 +42,7 @@ angular.module('myApp.view2', ['ngRoute'])
 
 
 	$scope.toggleButton = function(elevator, number, bool){
+		console.log("Toggle elevator " + elevator + " button " + number)
 		switch(elevator){
 			case 1:
 				switch(number){
