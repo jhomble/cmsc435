@@ -22,6 +22,8 @@ angular.module('myApp.view2', ['ngRoute'])
 	this.direction = 0;
 	this.queue = [];
 	this.waitTime = 0;
+	this.waitingQue = [];
+	this.inMotion = 0;
     };
 
     var el1 = new Elevator();
@@ -36,66 +38,216 @@ angular.module('myApp.view2', ['ngRoute'])
 	$scope.e2b3 = "btn btn-primary"
 	$scope.e2b4 = "btn btn-primary"
 	
+		// TODO: Make elevators and calls into objects
+		// inMotion : 0 = idle, 1 = up, -1 = down
 
-
-	$scope.toggleButton = function(elevator, number, bool){
-		console.log("Toggle elevator " + elevator + " button " + number)
-		switch(elevator){
-			case 1:
-				switch(number){
-					case 1: 
-						if(bool){$scope.e1b1 = "btn btn-primary"}
-						else {$scope.e1b1 = "btn btn-danger"}
-						break;
-					case 2:
-						if(bool){$scope.e1b2 = "btn btn-primary"}
-						else {$scope.e1b2 = "btn btn-danger"}
-						break;
-					case 3:
-						if(bool){$scope.e1b3 = "btn btn-primary"}
-						else {$scope.e1b3 = "btn btn-danger"}
-						break;
-					case 4:
-						if(bool){$scope.e1b4 = "btn btn-primary"}
-						else {$scope.e1b4 = "btn btn-danger"}
-						break;
-					default:
-						alert("fucked up again")
-						break;
-				}
-				break;
-			case 2:
-				switch(number){
-					case 1:
-						if(bool){$scope.e2b1 = "btn btn-primary"}
-						else {$scope.e2b1 = "btn btn-danger"}
-						break;
-					case 2:
-						if(bool){$scope.e2b2 = "btn btn-primary"}
-						else {$scope.e2b2 = "btn btn-danger"}
-						break;
-					case 3:
-						if(bool){$scope.e2b3 = "btn btn-primary"}
-						else {$scope.e2b3 = "btn btn-danger"}
-						break;
-					case 4:
-						if(bool){$scope.e2b4 = "btn btn-primary"}
-						else {$scope.e2b4 = "btn btn-danger"}
-						break;
-					default:
-						alert("fucked up again")
-						break;
-				}
-				break;
-			default:
-				alert("Fucked up")
-				break;
+		$scope.toggleButton = function (elevator, number, bool) {
+			console.log("Toggle elevator " + elevator + " button " + number)
+			switch (elevator) {
+				case 1:
+					switch (number) {
+						case 1:
+							if (bool) { $scope.e1b1 = "btn btn-primary" }
+							else { $scope.e1b1 = "btn btn-danger" }
+							break;
+						case 2:
+							if (bool) { $scope.e1b2 = "btn btn-primary" }
+							else { $scope.e1b2 = "btn btn-danger" }
+							break;
+						case 3:
+							if (bool) { $scope.e1b3 = "btn btn-primary" }
+							else { $scope.e1b3 = "btn btn-danger" }
+							break;
+						case 4:
+							if (bool) { $scope.e1b4 = "btn btn-primary" }
+							else { $scope.e1b4 = "btn btn-danger" }
+							break;
+						default:
+							alert("fucked up again")
+							break;
+					}
+					break;
+				case 2:
+					switch (number) {
+						case 1:
+							if (bool) { $scope.e2b1 = "btn btn-primary" }
+							else { $scope.e2b1 = "btn btn-danger" }
+							break;
+						case 2:
+							if (bool) { $scope.e2b2 = "btn btn-primary" }
+							else { $scope.e2b2 = "btn btn-danger" }
+							break;
+						case 3:
+							if (bool) { $scope.e2b3 = "btn btn-primary" }
+							else { $scope.e2b3 = "btn btn-danger" }
+							break;
+						case 4:
+							if (bool) { $scope.e2b4 = "btn btn-primary" }
+							else { $scope.e2b4 = "btn btn-danger" }
+							break;
+						default:
+							alert("fucked up again")
+							break;
+					}
+					break;
+				default:
+					alert("Fucked up")
+					break;
+			}
 		}
-	}
 
-	$scope.setDestination = function(){
+		//NEED TO CREATE A CHECK FLOOR FUNCTION -> checks waiting que of elevator to see if deselect button
+		var checkFloor = function(elevator){
+			switch(elevator){
+				case 1:
+					el1.waitingQue.forEach(function(floor, index){
+						if(floor === el1.floor){
+							el1.waitingQue.splice(index, 1)
+							$scope.toggleButton(1, floor, true);
+						}
+					})
+				break;
+				case 2:
+					el2.waitingQue.forEach(function(floor, index){
+						if(floor === el2.floor){
+							el2.waitingQue.splice(index, 1)
+							$scope.toggleButton(2, floor, true);
+						}
+					})
+				break;
+			}
+		}
 
-	}
+		// Just sets the inMotion field based on current floor and new one
+		var motion = function(elevator, floor){
+			switch(elevator){
+				case 1:
+					if(el1.floor < floor)
+						el1.inMotion = 1;
+					else el1.inMotion = -1;
+				break;
+				case 2:
+					if(el2.floor < floor)
+						el2.inMotion = 1;
+					else el2.inMotion = -1;
+				break;
+			}
+		}
+
+		$scope.setDestination = function (elevator, button) {
+			switch(elevator){
+				case 1:
+					switch(button){
+						case 1:
+							// Case 1: elevator 1 clicks on button one -> 
+							// First check if on floor already
+							//	toggle button
+							// then check if already in motion, 
+								// if yes, then just put on que
+								// if no, then put on que and set inMotion
+
+							if(el1.floor !== 1){
+								$scope.toggleButton(1,1,false);
+								if(el1.inMotion !== 0){
+									el1.waitingQue.push(1)
+								}else{
+									motion(1,1);
+									el1.waitingQue.push(1);
+								}
+							}
+
+						break;
+						case 2:
+							if(el1.floor !== 2){
+								$scope.toggleButton(1,2,false);
+								if(el1.inMotion !== 0){
+									el1.waitingQue.push(2)
+								}else{
+									motion(1,2);
+									el1.waitingQue.push(2);
+								}
+							}
+						break;
+						case 3:
+							if(el1.floor !== 3){
+								$scope.toggleButton(1,3,false);
+								if(el1.inMotion !== 0){
+									el1.waitingQue.push(3)
+								}else{
+									motion(1,3);
+									el1.waitingQue.push(3);
+								}
+							}
+						break;
+						case 4:
+							if(el1.floor !== 4){
+								$scope.toggleButton(1,4,false);
+								if(el1.inMotion !== 0){
+									el1.waitingQue.push(4)
+								}else{
+									motion(1,4);
+									el1.waitingQue.push(4);
+								}
+							}
+						break;
+
+					}
+				break;
+				case 2:
+					console.log("asd")
+					switch(button){
+						case 1:
+							if(el2.floor !== 1){
+								$scope.toggleButton(2,1,false);
+								if(el2.inMotion !== 0){
+									el2.waitingQue.push(1)
+								}else{
+									motion(2,1);
+									el2.waitingQue.push(1);
+								}
+							}
+						break;
+						case 2:
+							if(el2.floor !== 2){
+								$scope.toggleButton(2,2,false);
+								if(el2.inMotion !== 0){
+									el2.waitingQue.push(2)
+								}else{
+									motion(2,2);
+									el2.waitingQue.push(2);
+								}
+							}
+						break;
+						case 3:
+							if(el2.floor !== 3){
+								$scope.toggleButton(2,3,false);
+								if(el2.inMotion !== 0){
+									el2.waitingQue.push(3)
+								}else{
+									motion(2,3);
+									el2.waitingQue.push(3);
+								}
+							}
+						break;
+						case 4:
+							if(el2.floor !== 4){
+								$scope.toggleButton(2,4,false);
+								if(el2.inMotion !== 0){
+									el2.waitingQue.push(4)
+								}else{
+									motion(2,4);
+									el2.waitingQue.push(4);
+								}
+							}
+						break;
+
+					}
+				break;
+				default:
+					alert("Wrong elevator")
+				break;
+			}
+		}
 
     // Advances elevator closer to target if not waiting or idle
     var updateElevator = function (elevator) {
@@ -206,14 +358,6 @@ angular.module('myApp.view2', ['ngRoute'])
 		} 
     };
 
-    this.isE1AtFloor = function(f) {
-	return f == el1.floor;
-    }
-
-    this.isE2AtFloor = function(f) {
-	return f == el2.floor;
-    }
-
     this.getE1Queue = function() {
 	return el1.queue;
     };
@@ -222,21 +366,35 @@ angular.module('myApp.view2', ['ngRoute'])
 	return el2.queue;
     };
 
-    this.getE1Direction = function() {
+    this.isE1AtFloor = function (f) {
+	checkFloor(1);
+	return f == el1.floor;
+    }
+    
+    this.isE2AtFloor = function (f) {
+	checkFloor(2);
+	return f == el2.floor;
+    }
+    
+    this.getE1Direction = function () {
+	checkFloor(1);
 	return el1.direction;
     };
-
-    this.getE2Direction = function() {
+    
+    this.getE2Direction = function () {
+	checkFloor(2);
 	return el2.direction;
     };
-
-    this.getE1Floor = function() {
+    
+    this.getE1Floor = function () {
+	checkFloor(1);
 	return el1.floor;
     };
-
-    this.getE2Floor = function() {
+    
+    this.getE2Floor = function () {
+	checkFloor(2);
 	return el2.floor;
     };
-
+    
 }]);
 
