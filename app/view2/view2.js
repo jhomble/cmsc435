@@ -18,12 +18,12 @@ angular.module('myApp.view2', ['ngRoute'])
     $scope.e2Action = "text to show elevator 2 action" 
 
     var Elevator = function () {
-	this.floor = 1.0;
-	this.direction = 0;
-	this.queue = [];
-	this.waitTime = 0;
-	this.waitingQue = [];
-	this.inMotion = 0;
+	this.floor = 1.0;                
+	this.direction = 0;               // 1 = UP, 0 = IDLE, -1 = DOWN
+	this.queue = [];                  // Holds button calls from FLOOR BUTTONS
+	this.waitTime = 0;                // Should only be non-zero if stopped at floor for pick-up
+	this.waitingQue = [];             // Holds button calls from ELEVATORS
+	this.inMotion = 0;                // Probably redundant given direction
     };
 
     var el1 = new Elevator();
@@ -38,9 +38,6 @@ angular.module('myApp.view2', ['ngRoute'])
 	$scope.e2b3 = "btn btn-primary"
 	$scope.e2b4 = "btn btn-primary"
 	
-		// TODO: Make elevators and calls into objects
-		// inMotion : 0 = idle, 1 = up, -1 = down
-
 		$scope.toggleButton = function (elevator, number, bool) {
 			console.log("Toggle elevator " + elevator + " button " + number)
 			switch (elevator) {
@@ -255,15 +252,22 @@ angular.module('myApp.view2', ['ngRoute'])
 	    elevator.waitTime -= 0.01;
 	} else {
 	    var lastIndex = elevator.queue.length-1;
-	    if (Math.abs(elevator.floor - elevator.queue[lastIndex]) <= 0.0001) {
-		elevator.floor = elevator.queue[lastIndex];
-		elevator.queue.pop();
-		elevator.waitTime = 1;
-	    }
+	    
+	    elevator.queue.forEach(function (floor, index) {
+		if (Math.abs(elevator.floor - floor) <= 0.0001) {
+		    elevator.floor = floor;
+		    elevator.queue.splice(index,1);
+		    elevator.waitTime = 1;
+		}
+	    });
 	    
 	    if (elevator.queue.length == 0) {
 		elevator.direction = 0;
 	    } else if (elevator.waitTime <= 0) {
+		if ((elevator.floor == 4 && elevator.direction == 1) ||
+		    (elevator.floor == 1 && elevator.direction == -1)) {
+		    elevator.direction *= -1;
+		}
 		if (elevator.direction == 1) {
 		    elevator.floor += 0.01;
 		} else if (elevator.direction == -1) {
@@ -300,11 +304,11 @@ angular.module('myApp.view2', ['ngRoute'])
 			var fs = 4 - Math.abs(e.floor - f);
 
 			if ((e.direction == 1 && f < e.floor) || 
-			    (e.direction == 0 && f > e.floor) || 
+			    (e.direction == -1 && f > e.floor) || 
 			    (e.direction != d) && (f == e.floor)) {
 			    fs = 1;
 			} else {
-			    if (e.direction == d) {
+			    if (e.direction == d || e.direction == 0) {
 				fs += 2;
 			    } else {
 				fs ++;
@@ -342,9 +346,6 @@ angular.module('myApp.view2', ['ngRoute'])
 		    if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
 			elevator.queue.push(fl);
 			elevator.queue.sort();
-			if (newDir == 1) {
-			    elevator.queue.reverse();
-			}
 		    }
 		    elevator.direction = newDir;
 		    
