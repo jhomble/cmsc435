@@ -20,7 +20,7 @@ angular.module('myApp.view2', ['ngRoute'])
     var Elevator = function () {
 	this.floor = 1.0;                
 	this.direction = 0;               // 1 = UP, 0 = IDLE, -1 = DOWN
-	this.queue = [];                  // Holds button calls from FLOOR BUTTONS
+	this.queue = [];                  // Holds button calls from FLOOR BUTTONS (does NOT differentiate b/n up/down calls)
 	this.waitTime = 0;                // Should only be non-zero if stopped at floor for pick-up
 	this.waitingQue = [];             // Holds button calls from ELEVATORS
 	this.inMotion = 0;                // Probably redundant given direction
@@ -131,9 +131,11 @@ angular.module('myApp.view2', ['ngRoute'])
 			}
 		}
 
+                // Corresponds to ELEVATOR buttons, not floor buttons
 		$scope.setDestination = function (elevator, button) {
 			switch(elevator){
 				case 1:
+			                el1.waitTime = 0.5;
 					switch(button){
 						case 1:
 							// Case 1: elevator 1 clicks on button one -> 
@@ -146,9 +148,11 @@ angular.module('myApp.view2', ['ngRoute'])
 							if(el1.floor !== 1){
 								$scope.toggleButton(1,1,false);
 								if(el1.inMotion !== 0){
+								        registerElevator(el1, 1);
 									el1.waitingQue.push(1)
 								}else{
 									motion(1,1);
+								        registerElevator(el1, 1);
 									el1.waitingQue.push(1);
 								}
 							}
@@ -158,9 +162,11 @@ angular.module('myApp.view2', ['ngRoute'])
 							if(el1.floor !== 2){
 								$scope.toggleButton(1,2,false);
 								if(el1.inMotion !== 0){
+								        registerElevator(el1, 2);
 									el1.waitingQue.push(2)
 								}else{
 									motion(1,2);
+								        registerElevator(el1, 2);
 									el1.waitingQue.push(2);
 								}
 							}
@@ -169,9 +175,11 @@ angular.module('myApp.view2', ['ngRoute'])
 							if(el1.floor !== 3){
 								$scope.toggleButton(1,3,false);
 								if(el1.inMotion !== 0){
+								        registerElevator(el1, 3);
 									el1.waitingQue.push(3)
 								}else{
 									motion(1,3);
+								        registerElevator(el1, 3);
 									el1.waitingQue.push(3);
 								}
 							}
@@ -180,9 +188,11 @@ angular.module('myApp.view2', ['ngRoute'])
 							if(el1.floor !== 4){
 								$scope.toggleButton(1,4,false);
 								if(el1.inMotion !== 0){
+								        registerElevator(el1, 4);
 									el1.waitingQue.push(4)
 								}else{
 									motion(1,4);
+								        registerElevator(el1, 4);
 									el1.waitingQue.push(4);
 								}
 							}
@@ -192,14 +202,17 @@ angular.module('myApp.view2', ['ngRoute'])
 				break;
 				case 2:
 					console.log("asd")
+			                el2.waitTime = 0.5;			               
 					switch(button){
 						case 1:
 							if(el2.floor !== 1){
 								$scope.toggleButton(2,1,false);
 								if(el2.inMotion !== 0){
 									el2.waitingQue.push(1)
+								        registerElevator(el2, 1);
 								}else{
 									motion(2,1);
+								        registerElevator(el2, 1);
 									el2.waitingQue.push(1);
 								}
 							}
@@ -208,9 +221,11 @@ angular.module('myApp.view2', ['ngRoute'])
 							if(el2.floor !== 2){
 								$scope.toggleButton(2,2,false);
 								if(el2.inMotion !== 0){
+								        registerElevator(el2, 2);
 									el2.waitingQue.push(2)
 								}else{
 									motion(2,2);
+								        registerElevator(el2, 2);
 									el2.waitingQue.push(2);
 								}
 							}
@@ -219,9 +234,11 @@ angular.module('myApp.view2', ['ngRoute'])
 							if(el2.floor !== 3){
 								$scope.toggleButton(2,3,false);
 								if(el2.inMotion !== 0){
+								        registerElevator(el2, 3);
 									el2.waitingQue.push(3)
 								}else{
 									motion(2,3);
+								        registerElevator(el2, 3);
 									el2.waitingQue.push(3);
 								}
 							}
@@ -230,9 +247,11 @@ angular.module('myApp.view2', ['ngRoute'])
 							if(el2.floor !== 4){
 								$scope.toggleButton(2,4,false);
 								if(el2.inMotion !== 0){
+								        registerElevator(el2, 4);
 									el2.waitingQue.push(4)
 								}else{
 									motion(2,4);
+								        registerElevator(el2, 4);
 									el2.waitingQue.push(4);
 								}
 							}
@@ -250,9 +269,9 @@ angular.module('myApp.view2', ['ngRoute'])
     var updateElevator = function (elevator) {
 	if (elevator.waitTime > 0) {
 	    elevator.waitTime -= 0.01;
-	} else {
-	    var lastIndex = elevator.queue.length-1;
-	    
+	} else {	    
+	    // Check if elevator is close to any of the floors on the queue
+	    //    - if so, stop and remove that floor from the queue
 	    elevator.queue.forEach(function (floor, index) {
 		if (Math.abs(elevator.floor - floor) <= 0.0001) {
 		    elevator.floor = floor;
@@ -261,6 +280,7 @@ angular.module('myApp.view2', ['ngRoute'])
 		}
 	    });
 	    
+	    // Update direction and floor if currently in motion
 	    if (elevator.queue.length == 0) {
 		elevator.direction = 0;
 	    } else if (elevator.waitTime <= 0) {
@@ -286,19 +306,35 @@ angular.module('myApp.view2', ['ngRoute'])
 	updateElevator(el2);
     }, 100);
 
+    // Adds call to elevator queue and adjusts direction
+    var registerElevator = function(elevator, fl) {
+	var newDir = 0;
+	if (elevator.queue.length == 0) {
+	    newDir = getDirection(fl, elevator.floor);
+	} else {
+	    newDir = elevator.direction;
+	}
+	if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
+	    elevator.queue.push(fl);
+	    elevator.queue.sort();
+	}
+	elevator.direction = newDir;
+	
+    };
+
+    var getDirection = function(f, ef) {
+	if (ef > f) {
+	    return -1;
+	} else if (ef < f) {
+	    return 1;
+	} else {
+	    return 0;
+	}
+    };
+
     // Sets floor of elevator "closest" to call
     //    - "closest" determined by FS value
     this.answerCall = function(fl, dir) {
-
-	        var getDirection = function(f, ef) {
-		    if (ef > f) {
-			return -1;
-		    } else if (ef < f) {
-			return 1;
-		    } else {
-			return 0;
-		    }
-		};
 
 		var getFS = function(f, d, e) {
 			var fs = 4 - Math.abs(e.floor - f);
@@ -334,28 +370,11 @@ angular.module('myApp.view2', ['ngRoute'])
 		    }
 		}
 
-
-	        // Adds call to elevator queue and adjusts direction
-	        var registerElevator = function(elevator) {
-	            var newDir = 0;
-		    if (elevator.queue.length == 0) {
-			newDir = getDirection(fl, elevator.floor);
-		    } else {
-			newDir = elevator.direction;
-		    }
-		    if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
-			elevator.queue.push(fl);
-			elevator.queue.sort();
-		    }
-		    elevator.direction = newDir;
-		    
-		};
-
 		// Choose elevator that is "closer"
 		if (fs1 > fs2) {
-		    registerElevator(el1);
+		    registerElevator(el1, fl);
 		} else {
-		    registerElevator(el2);
+		    registerElevator(el2, fl);
 		} 
     };
 
