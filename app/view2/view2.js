@@ -309,26 +309,32 @@ angular.module('myApp.view2', ['ngRoute'])
 		};
 
 		this.isE1AtFloor = function (f) {
+			checkFloor(1);
 			return f == e1.floor;
 		}
 
 		this.isE2AtFloor = function (f) {
+			checkFloor(2);
 			return f == e2.floor;
 		}
 
 		this.getE1Direction = function () {
+			checkFloor(1);
 			return e1.direction;
 		};
 
 		this.getE2Direction = function () {
+			checkFloor(2);
 			return e2.direction;
 		};
 
 		this.getE1Floor = function () {
+			checkFloor(1);
 			return e1.floor;
 		};
 
 		this.getE2Floor = function () {
+			checkFloor(2);
 			return e2.floor;
 		};
 
