@@ -14,34 +14,33 @@ angular.module('myApp.view2', ['ngRoute'])
 		// Set to false if NOT debugging
 		$scope.debug = true;
 
-		$scope.e1Action = "text to show elevator 1 action"
-		$scope.e2Action = "text to show elevator 2 action"
-
-		var Elevator = function () {
+		var Elevator = function (id) {
 			this.floor = 1.0;
 			this.direction = 0;               // 1 = UP, 0 = IDLE, -1 = DOWN
 			this.queue = [];                  // Holds button calls from FLOOR BUTTONS (does NOT differentiate b/n up/down calls)
 			this.waitTime = 0;                // Should only be non-zero if stopped at floor for pick-up
 			this.waitingQue = [];             // Holds button calls from ELEVATORS
 			this.inMotion = 0;                // Probably redundant given direction
+			this.id = id;					  // Elevator number
 		};
 
-		var el1 = new Elevator();
-		var el2 = new Elevator();
+		var el1 = new Elevator(1);
+		var el2 = new Elevator(2);
 
-		$scope.e1Action = "Elevator 1"
-		$scope.e2Action = "Elevator 2"
-
-		// Updates the action text for given elevator with given actionText
-		var UpdateAction = function (elevator, actionText) {
-			if (elevator == 1) {
+		// Updates the action text for given elevator with id with given actionText
+		var UpdateAction = function (id, actionText) {
+			if (id == 1) {
 				$scope.e1Action = actionText
-			} else if (elevator == 2) {
+			} else if (id == 2) {
 				$scope.e2Action = actionText
 			} else {
-				alert("Invalid elevator passed to UpdateAction")
+				alert("Invalid elevator id passed to UpdateAction")
 			}
 		}
+
+		// Initialize the elevator status:
+		UpdateAction(1, "Idle")
+		UpdateAction(2, "Idle")
 
 		$scope.e1b1 = "btn btn-primary"
 		$scope.e1b2 = "btn btn-primary"
@@ -179,6 +178,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			}
 		}
 
+		// REMOVE? NOT USING?
 		// Just sets the inMotion field based on current floor and new one
 		var motion = function (elevator, floor) {
 			switch (elevator) {
@@ -358,6 +358,15 @@ angular.module('myApp.view2', ['ngRoute'])
 						elevator.floor -= 0.01;
 					}
 				}
+			}
+
+			// Update status text for each elevator
+			if (elevator.direction > 0) {
+				UpdateAction(elevator.id, "Going Up");
+			} else if (elevator.direction < 0) {
+				UpdateAction(elevator.id, "Going Down");
+			} else {
+				UpdateAction(elevator.id, "Idle");
 			}
 
 		};
