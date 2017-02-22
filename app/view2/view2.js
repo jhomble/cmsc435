@@ -378,8 +378,8 @@ angular.module('myApp.view2', ['ngRoute'])
 				if (elevator.queue.length == 0) {
 					elevator.direction = 0;
 				} else if (elevator.waitTime <= 0) {
-					if ((elevator.floor == 4 && elevator.direction == 1) ||
-						(elevator.floor == 1 && elevator.direction == -1)) {
+					if ((elevator.floor >= 4 && elevator.direction == 1) ||
+						(elevator.floor <= 1 && elevator.direction == -1)) {
 						elevator.direction *= -1;
 					}
 					if (elevator.direction == 1) {
