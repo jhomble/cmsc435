@@ -23,6 +23,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			this.inMotion = 0;                // Probably redundant given direction
 			this.id = id;					  // Elevator number
 			this.floorCount = 0;			  // Track # of floors visited
+			this.requestState = 0;			  // 0 = Idle, 1 = Going to floor, 2 = On floor w/ elevator request
 		};
 
 		var el1 = new Elevator(1);
@@ -62,7 +63,8 @@ angular.module('myApp.view2', ['ngRoute'])
 
 		// I'm just gonna make it that floor 1 up = 1, floor 1 down = 2, floor 2 up = 3... for button value
 		$scope.toggleButton = function (elevator, number, bool) {
-			console.log("Toggle elevator " + elevator + " button " + number)
+			//console.log("Toggle elevator " + elevator + " button " + number)
+			
 			switch (elevator) {
 				case 1:
 					switch (number) {
@@ -208,128 +210,134 @@ angular.module('myApp.view2', ['ngRoute'])
 		$scope.setDestination = function (elevator, button) {
 			switch (elevator) {
 				case 1:
-					el1.waitTime = 0.5;
-					switch (button) {
-						case 1:
-							// Case 1: elevator 1 clicks on button one -> 
-							// First check if on floor already
-							//	toggle button
-							// then check if already in motion, 
-							// if yes, then just put on que
-							// if no, then put on que and set inMotion
+					console.log("Elevator 1 has state " + el1.requestState);
+					if (el1.requestState !=0){
+						el1.waitTime = 0.5;
+						switch (button) {
+							case 1:
+								// Case 1: elevator 1 clicks on button one -> 
+								// First check if on floor already
+								//	toggle button
+								// then check if already in motion, 
+								// if yes, then just put on que
+								// if no, then put on que and set inMotion
 
-							if (el1.floor !== 1) {
-								$scope.toggleButton(1, 1, false);
-								if (el1.inMotion !== 0) {
-									registerElevator(el1, 1);
-									el1.waitingQue.push(1)
-								} else {
-									motion(1, 1);
-									registerElevator(el1, 1);
-									el1.waitingQue.push(1);
+								if (el1.floor !== 1) {
+									$scope.toggleButton(1, 1, false);
+									if (el1.inMotion !== 0) {
+										registerElevator(el1, 1);
+										el1.waitingQue.push(1)
+									} else {
+										motion(1, 1);
+										registerElevator(el1, 1);
+										el1.waitingQue.push(1);
+									}
 								}
-							}
 
-							break;
-						case 2:
-							if (el1.floor !== 2) {
-								$scope.toggleButton(1, 2, false);
-								if (el1.inMotion !== 0) {
-									registerElevator(el1, 2);
-									el1.waitingQue.push(2)
-								} else {
-									motion(1, 2);
-									registerElevator(el1, 2);
-									el1.waitingQue.push(2);
+								break;
+							case 2:
+								if (el1.floor !== 2) {
+									$scope.toggleButton(1, 2, false);
+									if (el1.inMotion !== 0) {
+										registerElevator(el1, 2);
+										el1.waitingQue.push(2)
+									} else {
+										motion(1, 2);
+										registerElevator(el1, 2);
+										el1.waitingQue.push(2);
+									}
 								}
-							}
-							break;
-						case 3:
-							if (el1.floor !== 3) {
-								$scope.toggleButton(1, 3, false);
-								if (el1.inMotion !== 0) {
-									registerElevator(el1, 3);
-									el1.waitingQue.push(3)
-								} else {
-									motion(1, 3);
-									registerElevator(el1, 3);
-									el1.waitingQue.push(3);
+								break;
+							case 3:
+								if (el1.floor !== 3) {
+									$scope.toggleButton(1, 3, false);
+									if (el1.inMotion !== 0) {
+										registerElevator(el1, 3);
+										el1.waitingQue.push(3)
+									} else {
+										motion(1, 3);
+										registerElevator(el1, 3);
+										el1.waitingQue.push(3);
+									}
 								}
-							}
-							break;
-						case 4:
-							if (el1.floor !== 4) {
-								$scope.toggleButton(1, 4, false);
-								if (el1.inMotion !== 0) {
-									registerElevator(el1, 4);
-									el1.waitingQue.push(4)
-								} else {
-									motion(1, 4);
-									registerElevator(el1, 4);
-									el1.waitingQue.push(4);
+								break;
+							case 4:
+								if (el1.floor !== 4) {
+									$scope.toggleButton(1, 4, false);
+									if (el1.inMotion !== 0) {
+										registerElevator(el1, 4);
+										el1.waitingQue.push(4)
+									} else {
+										motion(1, 4);
+										registerElevator(el1, 4);
+										el1.waitingQue.push(4);
+									}
 								}
-							}
-							break;
+								break;
 
+						}
 					}
 					break;
 				case 2:
 					console.log("asd")
-					el2.waitTime = 0.5;
-					switch (button) {
-						case 1:
-							if (el2.floor !== 1) {
-								$scope.toggleButton(2, 1, false);
-								if (el2.inMotion !== 0) {
-									el2.waitingQue.push(1)
-									registerElevator(el2, 1);
-								} else {
-									motion(2, 1);
-									registerElevator(el2, 1);
-									el2.waitingQue.push(1);
+					console.log("Elevator 2 has state " + el2.requestState);
+					if (el2.requestState !=0){
+						el2.waitTime = 0.5;
+						switch (button) {
+							case 1:
+								if (el2.floor !== 1) {
+									$scope.toggleButton(2, 1, false);
+									if (el2.inMotion !== 0) {
+										el2.waitingQue.push(1)
+										registerElevator(el2, 1);
+									} else {
+										motion(2, 1);
+										registerElevator(el2, 1);
+										el2.waitingQue.push(1);
+									}
 								}
-							}
-							break;
-						case 2:
-							if (el2.floor !== 2) {
-								$scope.toggleButton(2, 2, false);
-								if (el2.inMotion !== 0) {
-									registerElevator(el2, 2);
-									el2.waitingQue.push(2)
-								} else {
-									motion(2, 2);
-									registerElevator(el2, 2);
-									el2.waitingQue.push(2);
+								break;
+							case 2:
+								if (el2.floor !== 2) {
+									$scope.toggleButton(2, 2, false);
+									if (el2.inMotion !== 0) {
+										registerElevator(el2, 2);
+										el2.waitingQue.push(2)
+									} else {
+										motion(2, 2);
+										registerElevator(el2, 2);
+										el2.waitingQue.push(2);
+									}
 								}
-							}
-							break;
-						case 3:
-							if (el2.floor !== 3) {
-								$scope.toggleButton(2, 3, false);
-								if (el2.inMotion !== 0) {
-									registerElevator(el2, 3);
-									el2.waitingQue.push(3)
-								} else {
-									motion(2, 3);
-									registerElevator(el2, 3);
-									el2.waitingQue.push(3);
+								break;
+							case 3:
+								if (el2.floor !== 3) {
+									$scope.toggleButton(2, 3, false);
+									if (el2.inMotion !== 0) {
+										registerElevator(el2, 3);
+										el2.waitingQue.push(3)
+									} else {
+										motion(2, 3);
+										registerElevator(el2, 3);
+										el2.waitingQue.push(3);
+									}
 								}
-							}
-							break;
-						case 4:
-							if (el2.floor !== 4) {
-								$scope.toggleButton(2, 4, false);
-								if (el2.inMotion !== 0) {
-									registerElevator(el2, 4);
-									el2.waitingQue.push(4)
-								} else {
-									motion(2, 4);
-									registerElevator(el2, 4);
-									el2.waitingQue.push(4);
+								break;
+							case 4:
+								if (el2.floor !== 4) {
+									$scope.toggleButton(2, 4, false);
+									if (el2.inMotion !== 0) {
+										registerElevator(el2, 4);
+										el2.waitingQue.push(4)
+									} else {
+										motion(2, 4);
+										registerElevator(el2, 4);
+										el2.waitingQue.push(4);
+									}
 								}
-							}
-							break;
+								break;
 
+						}
 					}
 					break;
 				default:
@@ -353,6 +361,18 @@ angular.module('myApp.view2', ['ngRoute'])
 						elevator.waitTime = 1;
 						elevator.floorCount++;
 					}
+					
+					//Want to change requestState in here so that we are certain to have traversed to
+					//the target floor. In requestState 1, we are going to fetch someone from a floor the
+					//elevator is not currently on. Then we have to advance to the next state (2) to be able
+					//to handle the floor request. Once we get to the floor and the queue is empty, the 
+					//elevator will close its doors, elevator buttons can't be used.
+					if (elevator.requestState == 1 && elevator.queue.length == 0){
+						elevator.requestState = 2;
+					} else if (elevator.queue.length == 0){
+						elevator.requestState = 0;
+					}
+				
 				});
 
 				// Update direction and floor if currently in motion
@@ -464,9 +484,21 @@ angular.module('myApp.view2', ['ngRoute'])
 
 			// Choose elevator that is "closer"
 			if (fs1 > fs2) {
+				if (el1.floor == fl){
+					el1.requestState = 2;
+				} else {
+					el1.requestState = 1;
+				}
+				alert("Elevator 1 requested");
 				registerElevator(el1, fl);
 			} else {
+				if (el2.floor == fl){
+					el2.requestState = 2;
+				} else {
+					el2.requestState = 1;
+				}
 				registerElevator(el2, fl);
+				alert("Elevator 2 requested");
 			}
 		};
 
