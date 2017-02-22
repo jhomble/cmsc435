@@ -29,6 +29,20 @@ angular.module('myApp.view2', ['ngRoute'])
 		var el1 = new Elevator();
 		var el2 = new Elevator();
 
+		$scope.e1Action = "Elevator 1"
+		$scope.e2Action = "Elevator 2"
+
+		// Updates the action text for given elevator with given actionText
+		var UpdateAction = function (elevator, actionText) {
+			if (elevator == 1) {
+				$scope.e1Action = actionText
+			} else if (elevator == 2) {
+				$scope.e2Action = actionText
+			} else {
+				alert("Invalid elevator passed to UpdateAction")
+			}
+		}
+
 		$scope.e1b1 = "btn btn-primary"
 		$scope.e1b2 = "btn btn-primary"
 		$scope.e1b3 = "btn btn-primary"
