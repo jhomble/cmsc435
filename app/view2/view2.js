@@ -20,7 +20,6 @@ angular.module('myApp.view2', ['ngRoute'])
 			this.queue = [];                  // Holds button calls from FLOOR BUTTONS (does NOT differentiate b/n up/down calls)
 			this.waitTime = 0;                // Should only be non-zero if stopped at floor for pick-up
 			this.waitingQue = [];             // Holds button calls from ELEVATORS
-			this.inMotion = 0;                // Probably redundant given direction
 			this.id = id;					  // Elevator number
 			this.floorCount = 0;			  // Track # of floors visited
 			this.requestState = 0;			  // 0 = Idle, 1 = Going to floor, 2 = On floor w/ elevator request
@@ -195,13 +194,13 @@ angular.module('myApp.view2', ['ngRoute'])
 			switch (elevator) {
 				case 1:
 					if (el1.floor < floor)
-						el1.inMotion = 1;
-					else el1.inMotion = -1;
+						el1.direction = 1;
+					else el1.direction = -1;
 					break;
 				case 2:
 					if (el2.floor < floor)
-						el2.inMotion = 1;
-					else el2.inMotion = -1;
+						el2.direction = 1;
+					else el2.direction = -1;
 					break;
 			}
 		}
@@ -224,7 +223,7 @@ angular.module('myApp.view2', ['ngRoute'])
 
 								if (el1.floor !== 1) {
 									$scope.toggleButton(1, 1, false);
-									if (el1.inMotion !== 0) {
+									if (el1.direction !== 0) {
 										registerElevator(el1, 1);
 										el1.waitingQue.push(1)
 									} else {
@@ -238,7 +237,7 @@ angular.module('myApp.view2', ['ngRoute'])
 							case 2:
 								if (el1.floor !== 2) {
 									$scope.toggleButton(1, 2, false);
-									if (el1.inMotion !== 0) {
+									if (el1.direction !== 0) {
 										registerElevator(el1, 2);
 										el1.waitingQue.push(2)
 									} else {
@@ -251,7 +250,7 @@ angular.module('myApp.view2', ['ngRoute'])
 							case 3:
 								if (el1.floor !== 3) {
 									$scope.toggleButton(1, 3, false);
-									if (el1.inMotion !== 0) {
+									if (el1.direction !== 0) {
 										registerElevator(el1, 3);
 										el1.waitingQue.push(3)
 									} else {
@@ -264,7 +263,7 @@ angular.module('myApp.view2', ['ngRoute'])
 							case 4:
 								if (el1.floor !== 4) {
 									$scope.toggleButton(1, 4, false);
-									if (el1.inMotion !== 0) {
+									if (el1.direction !== 0) {
 										registerElevator(el1, 4);
 										el1.waitingQue.push(4)
 									} else {
@@ -287,7 +286,7 @@ angular.module('myApp.view2', ['ngRoute'])
 							case 1:
 								if (el2.floor !== 1) {
 									$scope.toggleButton(2, 1, false);
-									if (el2.inMotion !== 0) {
+									if (el2.direction !== 0) {
 										el2.waitingQue.push(1)
 										registerElevator(el2, 1);
 									} else {
@@ -300,7 +299,7 @@ angular.module('myApp.view2', ['ngRoute'])
 							case 2:
 								if (el2.floor !== 2) {
 									$scope.toggleButton(2, 2, false);
-									if (el2.inMotion !== 0) {
+									if (el2.direction !== 0) {
 										registerElevator(el2, 2);
 										el2.waitingQue.push(2)
 									} else {
@@ -313,7 +312,7 @@ angular.module('myApp.view2', ['ngRoute'])
 							case 3:
 								if (el2.floor !== 3) {
 									$scope.toggleButton(2, 3, false);
-									if (el2.inMotion !== 0) {
+									if (el2.direction !== 0) {
 										registerElevator(el2, 3);
 										el2.waitingQue.push(3)
 									} else {
@@ -326,7 +325,7 @@ angular.module('myApp.view2', ['ngRoute'])
 							case 4:
 								if (el2.floor !== 4) {
 									$scope.toggleButton(2, 4, false);
-									if (el2.inMotion !== 0) {
+									if (el2.direction !== 0) {
 										registerElevator(el2, 4);
 										el2.waitingQue.push(4)
 									} else {
