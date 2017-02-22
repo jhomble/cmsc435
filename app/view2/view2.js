@@ -484,7 +484,9 @@ angular.module('myApp.view2', ['ngRoute'])
 
 			// Choose elevator that is "closer"
 			if (fs1 > fs2) {
-				if (el1.floor == fl){
+				if (el1.floor == fl ){
+					el1.requestState = 2;
+				} else if (el1.direction!=0) {
 					el1.requestState = 2;
 				} else {
 					el1.requestState = 1;
@@ -492,7 +494,9 @@ angular.module('myApp.view2', ['ngRoute'])
 				alert("Elevator 1 requested");
 				registerElevator(el1, fl);
 			} else {
-				if (el2.floor == fl){
+				if (el2.floor == fl ){
+					el2.requestState = 2;
+				} else if (el2.direction != 0) {
 					el2.requestState = 2;
 				} else {
 					el2.requestState = 1;
