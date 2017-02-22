@@ -154,8 +154,8 @@ angular.module('myApp.view2', ['ngRoute'])
 		}
 
 		//NEED TO CREATE A CHECK FLOOR FUNCTION -> checks waiting que of elevator to see if deselect button
-		var checkFloor = function (elevator) {
-			switch (elevator) {
+		var checkFloor = function (elevator_id) {
+			switch (elevator_id) {
 				case 1:
 					el1.waitingQue.forEach(function (floor, index) {
 						if (floor === el1.floor) {
@@ -163,8 +163,12 @@ angular.module('myApp.view2', ['ngRoute'])
 							$scope.toggleButton(1, floor, true);
 						}
 					})
-					$scope.toggleButton(3, (el1.floor * 2) - 1, true)
-					$scope.toggleButton(3, el1.floor * 2, true)
+					// Turn off Up:
+					if (el1.direction > 0)
+						$scope.toggleButton(3, (el1.floor * 2) - 1, true)
+					// Turn off Down:
+					if (el1.direction < 0)
+						$scope.toggleButton(3, el1.floor * 2, true)
 					break;
 				case 2:
 					el2.waitingQue.forEach(function (floor, index) {
@@ -173,8 +177,12 @@ angular.module('myApp.view2', ['ngRoute'])
 							$scope.toggleButton(2, floor, true);
 						}
 					})
-					$scope.toggleButton(3, (el2.floor * 2) - 1, true)
-					$scope.toggleButton(3, el2.floor * 2, true)
+					// Turn off Up:
+					if (el2.direction > 0)
+						$scope.toggleButton(3, (el2.floor * 2) - 1, true)
+					// Turn off Down:
+					if (el2.direction < 0)
+						$scope.toggleButton(3, el2.floor * 2, true)
 					break;
 			}
 		}
