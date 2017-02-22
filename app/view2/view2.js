@@ -22,6 +22,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			this.waitingQue = [];             // Holds button calls from ELEVATORS
 			this.inMotion = 0;                // Probably redundant given direction
 			this.id = id;					  // Elevator number
+			this.floorCount = 0;			  // Track # of floors visited
 		};
 
 		var el1 = new Elevator(1);
@@ -330,6 +331,7 @@ angular.module('myApp.view2', ['ngRoute'])
 		}
 
 		// Advances elevator closer to target if not waiting or idle
+		// Also updates action text for param elevator
 		var updateElevator = function (elevator) {
 			if (elevator.waitTime > 0) {
 				elevator.waitTime -= 0.01;
@@ -341,6 +343,7 @@ angular.module('myApp.view2', ['ngRoute'])
 						elevator.floor = floor;
 						elevator.queue.splice(index, 1);
 						elevator.waitTime = 1;
+						elevator.floorCount++;
 					}
 				});
 
@@ -360,7 +363,7 @@ angular.module('myApp.view2', ['ngRoute'])
 				}
 			}
 
-			// Update status text for each elevator
+			// Update status text for elevator
 			if (elevator.direction > 0) {
 				UpdateAction(elevator.id, "Going Up");
 			} else if (elevator.direction < 0) {
