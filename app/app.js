@@ -13,7 +13,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
 
   $routeProvider
   .when('/help', {
-    templateUrl: '/view2/help.html'
+    templateUrl: '/view2/help'
   })
   .otherwise({redirectTo: '/view1'});
 }]);
