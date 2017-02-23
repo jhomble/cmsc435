@@ -478,6 +478,7 @@ angular.module('myApp.view2', ['ngRoute'])
 		// Sets floor of elevator "closest" to call
 		//    - "closest" determined by FS value
 		this.answerCall = function (fl, dir) {
+
 			if (dir === 1) {
 				$scope.toggleButton(3, fl*2 - 1, false);
 			} else {
@@ -517,46 +518,33 @@ angular.module('myApp.view2', ['ngRoute'])
 				}
 			}
 
+		        var chooseElevator = function (elevator) {
+			    if (elevator.floor == fl ){ //we have arrived at floor button that called us
+				elevator.requestState = 2;
+			    } else if (elevator.direction != 0) { //on the move, possibly done requests
+				if (elevator.queue.indexOf(fl) != -1){//going to a floor that needs a call, shift to state 1
+				    elevator.requestState = 1;
+				} else {//proceed to state 2, no other call to do besides get to target floor
+				    elevator.requestState = 2;
+				}
+				
+			    } else {//on the move to get to requested floor
+				elevator.requestState = 1;
+			    }
+			    alert("Elevator requested");
+			    if (dir > 0){
+				registerElevatorWithDirection(elevator, fl, 1); // 1 is up floor button pushed
+			    } else {
+				registerElevatorWithDirection(elevator, fl, 0);// 0 is down floor button pushed
+			    }
+			
+			}
+
 			// Choose elevator that is "closer"
 			if (fs1 > fs2) {
-				if (el1.floor == fl ){ //we have arrived at floor button that called us
-					el1.requestState = 2;
-				} else if (el1.direction != 0) { //on the move, possibly done requests
-					if (el1.queue.includes(fl)){//going to a floor that needs a call, shift to state 1
-						el1.requestState = 1;
-					} else {//proceed to state 2, no other call to do besides get to target floor
-						el1.requestState = 2;
-					}
-					
-				} else {//on the move to get to requested floor
-					el1.requestState = 1;
-				}
-				alert("Elevator 1 requested");
-				if (dir > 0){
-					registerElevatorWithDirection(el1, fl, 1); // 1 is up floor button pushed
-				} else {
-					registerElevatorWithDirection(el1, fl, 0);// 0 is down floor button pushed
-				}
-				
+			    chooseElevator(el1);
 			} else {
-				if (el2.floor == fl ){ //we have arrived at floor button that called us
-					el2.requestState = 2;
-				} else if (el2.direction != 0) { //on the move, possibly done requests
-					if (el2.queue.includes(fl)){ //going to a floor that needs a call, shift to state 1
-						el2.requestState = 1;
-					} else {//proceed to state 2, no other call to do besides get to target floor
-						el2.requestState = 2;
-					}
-				} else {//on the move to get to requested floor
-					el2.requestState = 1;
-				}
-				
-				alert("Elevator 2 requested");
-				if (dir > 0){
-					registerElevatorWithDirection(el2, fl, 1); // 1 is up floor button pushed
-				} else {
-					registerElevatorWithDirection(el2, fl, 0);// 0 is down floor button pushed
-				}
+			    chooseElevator(el2);
 			}
 		};
 
