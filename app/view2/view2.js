@@ -54,19 +54,19 @@ angular.module('myApp.view2', ['ngRoute'])
 
 
 		// Updates the action text for given elevator with id with given actionText
-		var UpdateAction = function (id, actionText) {
+		var updateAction = function (id, actionText) {
 			if (id == 1) {
 				$scope.e1Action = actionText
 			} else if (id == 2) {
 				$scope.e2Action = actionText
 			} else {
-				alert("Invalid elevator id passed to UpdateAction")
+				alert("Invalid elevator id passed to updateAction")
 			}
 		}
 
 		// Initialize the elevator status:
-		UpdateAction(1, "Idle")
-		UpdateAction(2, "Idle")
+		updateAction(1, "Idle")
+		updateAction(2, "Idle")
 
 		$scope.e1b1 = "btn btn-primary"
 		$scope.e1b2 = "btn btn-primary"
@@ -179,7 +179,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			}
 		}
 
-		//NEED TO CREATE A CHECK FLOOR FUNCTION -> checks waiting que of elevator to see if deselect button
+		//Checks waiting que of elevator to see if deselect button
 		var checkFloor = function (elevator_id) {
 			switch (elevator_id) {
 				case 1:
@@ -225,7 +225,6 @@ angular.module('myApp.view2', ['ngRoute'])
 			}
 		}
 
-		// REMOVE? NOT USING?
 		// Just sets the inMotion field based on current floor and new one
 		var motion = function (elevator, floor) {
 			switch (elevator) {
@@ -438,11 +437,11 @@ angular.module('myApp.view2', ['ngRoute'])
 
 			 // Update status text for elevator
 			 if (elevator.direction > 0) {
-				 UpdateAction(elevator.id, "Going Up");
+				 updateAction(elevator.id, "Going Up");
 			 } else if (elevator.direction < 0) {
-				 UpdateAction(elevator.id, "Going Down");
+				 updateAction(elevator.id, "Going Down");
 			 } else {
-				 UpdateAction(elevator.id, "Idle");
+				 updateAction(elevator.id, "Idle");
 			 }
 
 		 };
