@@ -29,6 +29,14 @@ angular.module('myApp.view2', ['ngRoute'])
 	        var Statistics = function () {
 		    this.totalPassengers = 0;
 		    this.averageWaitTime = 0.0;
+		    this.passengers = [];
+		    this.passengersDone = 0;
+		}
+
+	        var Passenger = function (time, floor, direction) {
+		    this.time = time;
+		    this.floor = floor;
+		    this.direction = direction;
 		}
 
 		var el1 = new Elevator(1);
@@ -379,119 +387,177 @@ angular.module('myApp.view2', ['ngRoute'])
 						elevator.floor = floor;
 						elevator.queue.splice(index, 1);
 						elevator.waitTime = 1;
-						elevator.floorCount++;
-						var temp = elevator.dirQueue.pop();
-						console.log("dirQueue has element" + temp);
-						if (temp % 2 > 0 && temp != 0){
-							$scope.toggleButton(3, (elevator.floor * 2) - 1, true);
-						} else if (temp % 2== 0 && temp != 0){
-							$scope.toggleButton(3, elevator.floor * 2, true);
-						}
-					}
-					
-					//Want to change requestState in here so that we are certain to have traversed to
-					//the target floor. In requestState 1, we are going to fetch someone from a floor the
-					//elevator is not currently on. Then we have to advance to the next state (2) to be able
-					//to handle the floor request. Once we get to the floor and the queue is empty, the 
-					//elevator will close its doors, elevator buttons can't be used.
-					if (elevator.requestState == 1 && elevator.queue.length == 0){
-						elevator.requestState = 2;
-					} else if (elevator.queue.length == 0){
-						elevator.requestState = 0;
-					}
-				
-				});
+						 elevator.floorCount++;
+						 var temp = elevator.dirQueue.pop();
+						 console.log("dirQueue has element" + temp);
+						 if (temp % 2 > 0 && temp != 0){
+							 $scope.toggleButton(3, (elevator.floor * 2) - 1, true);
+							 resetPassengers(floor, 1);
+						 } else if (temp % 2== 0 && temp != 0){
+							 $scope.toggleButton(3, elevator.floor * 2, true);
+							 resetPassengers(floor, -1);
+						 }
+					 }
 
-				// Update direction and floor if currently in motion
-				if (elevator.queue.length == 0) {
-					elevator.direction = 0;
-				} else if (elevator.waitTime <= 0) {
-					if ((elevator.floor >= 4 && elevator.direction == 1) ||
-						(elevator.floor <= 1 && elevator.direction == -1)) {
-						elevator.direction *= -1;
-					}
-					if (elevator.direction == 1) {
-						elevator.floor += 0.01;
-					} else if (elevator.direction == -1) {
-						elevator.floor -= 0.01;
-					}
-				}
-			}
+					 //Want to change requestState in here so that we are certain to have traversed to
+					 //the target floor. In requestState 1, we are going to fetch someone from a floor the
+					 //elevator is not currently on. Then we have to advance to the next state (2) to be able
+					 //to handle the floor request. Once we get to the floor and the queue is empty, the 
+					 //elevator will close its doors, elevator buttons can't be used.
+					 if (elevator.requestState == 1 && elevator.queue.length == 0){
+						 elevator.requestState = 2;
+					 } else if (elevator.queue.length == 0){
+						 elevator.requestState = 0;
+					 }
 
-			// Update status text for elevator
-			if (elevator.direction > 0) {
-				UpdateAction(elevator.id, "Going Up");
-			} else if (elevator.direction < 0) {
-				UpdateAction(elevator.id, "Going Down");
-			} else {
-				UpdateAction(elevator.id, "Idle");
-			}
+				 });
 
-		};
+				 // Update direction and floor if currently in motion
+				 if (elevator.queue.length == 0) {
+					 elevator.direction = 0;
+				 } else if (elevator.waitTime <= 0) {
+					 if ((elevator.floor >= 4 && elevator.direction == 1) ||
+						 (elevator.floor <= 1 && elevator.direction == -1)) {
+						 elevator.direction *= -1;
+					 }
+					 if (elevator.direction == 1) {
+						 elevator.floor += 0.01;
+					 } else if (elevator.direction == -1) {
+						 elevator.floor -= 0.01;
+					 }
+				 }
+			 }
 
-		$interval(function () {
-			updateElevator(el1);
-		}, 100).then(function () {
-			checkFloor(1)
-		})
+			 // Update status text for elevator
+			 if (elevator.direction > 0) {
+				 UpdateAction(elevator.id, "Going Up");
+			 } else if (elevator.direction < 0) {
+				 UpdateAction(elevator.id, "Going Down");
+			 } else {
+				 UpdateAction(elevator.id, "Idle");
+			 }
 
-		$interval(function () {
-			updateElevator(el2);
-		}, 100).then(function () {
-			checkFloor(2)
-		})
+		 };
 
-		// Adds call to elevator queue and adjusts direction
-		// Does not care about the direction of floor button that called it.
-		var registerElevator = function (elevator, fl) {
-			var newDir = 0;
-			if (elevator.queue.length == 0) {
-				newDir = getDirection(fl, elevator.floor);
-			} else {
-				newDir = elevator.direction;
-			}
-			if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
-				elevator.queue.push(fl);
-				elevator.queue.sort();
-				elevator.dirQueue.push((fl*2));
-				elevator.dirQueue.sort();
-			}
-			elevator.direction = newDir;
+		 $interval(function () {
+			 updateElevator(el1);
+		 }, 60).then(function () {
+			 checkFloor(1)
+		 })
 
-		};
-		
-		/* For filling a direction queue with values that will allow us to shut off
-		   the certain up or down floor button that called us, it goes hand in hand with
-		   the elevator.queue.
-		*/
-		var registerElevatorWithDirection = function (elevator, fl, dirPushed) {
-			var newDir = 0;
-			if (elevator.queue.length == 0) {
-				newDir = getDirection(fl, elevator.floor);
-			} else {
-				newDir = elevator.direction;
-			}
-			if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
-				elevator.queue.push(fl);
-				elevator.queue.sort();
-				elevator.dirQueue.push((fl*2) - dirPushed);
-				elevator.dirQueue.sort();
-			}
-			elevator.direction = newDir;
+		 $interval(function () {
+			 updateElevator(el2);
+		 }, 60).then(function () {
+			 checkFloor(2)
+		 })
 
-		};
+		 // Adds call to elevator queue and adjusts direction
+		 // Does not care about the direction of floor button that called it.
+		 var registerElevator = function (elevator, fl) {
+			 var newDir = 0;
+			 if (elevator.queue.length == 0) {
+				 newDir = getDirection(fl, elevator.floor);
+			 } else {
+				 newDir = elevator.direction;
+			 }
+			 if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
+				 elevator.queue.push(fl);
+				 elevator.queue.sort();
+				 elevator.dirQueue.push((fl*2));
+				 elevator.dirQueue.sort();
+			 }
+			 elevator.direction = newDir;
 
-		var getDirection = function (f, ef) {
-			if (ef > f) {
-				return -1;
-			} else if (ef < f) {
-				return 1;
-			} else {
-				return 0;
-			}
-		};
+		 };
+
+		 /* For filling a direction queue with values that will allow us to shut off
+		    the certain up or down floor button that called us, it goes hand in hand with
+		    the elevator.queue.
+		 */
+		 var registerElevatorWithDirection = function (elevator, fl, dirPushed) {
+			 var newDir = 0;
+			 if (elevator.queue.length == 0) {
+				 newDir = getDirection(fl, elevator.floor);
+			 } else {
+				 newDir = elevator.direction;
+			 }
+			 if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
+				 elevator.queue.push(fl);
+				 elevator.queue.sort();
+				 elevator.dirQueue.push((fl*2) - dirPushed);
+				 elevator.dirQueue.sort();
+			 }
+			 elevator.direction = newDir;
+
+		 };
+
+		 var getDirection = function (f, ef) {
+			 if (ef > f) {
+				 return -1;
+			 } else if (ef < f) {
+				 return 1;
+			 } else {
+				 return 0;
+			 }
+		 };
+
+		 var updateAverage = function(fl, dir) {
+		     var totalTimeWaited = 0;
+		     var numWaiting = 0;
+		     var indexesToRemove = [];
+		     $scope.stats.passengers.forEach( function (passenger, index) {
+			 if (passenger.floor == fl && passenger.direction == dir) {
+			     totalTimeWaited += Math.floor((Date.now() - passenger.time)/1000);
+			     numWaiting ++;
+			     indexesToRemove.push(index);
+			     $scope.stats.passengersDone ++;
+			 }
+		     });
+		     for (var i = 0; i < indexesToRemove.length; i++) {
+			 $scope.stats.passengers.splice(indexesToRemove[i], 1);
+		     }
+		     if ($scope.stats.passengersDone > 0) {
+			 $scope.stats.averageWaitTime = (($scope.stats.passengersDone - numWaiting)*($scope.stats.averageWaitTime)
+							 + totalTimeWaited) / $scope.stats.passengersDone;
+		     }
+		}
+
+	        var resetPassengers = function(fl, dir) {
+		    updateAverage(fl, dir);
+		    switch (dir) {
+			case 1:
+			    switch (fl) {
+			    case 1:
+				$scope.f1Passengers = 0;
+				break;
+			    case 2:
+				$scope.f2PassengersUp = 0;
+				break;
+			    case 3:
+				$scope.f3PassengersUp = 0;
+				break;
+			    }
+			    break;
+			case -1:
+			    switch (fl) {
+			    case 2:
+				$scope.f2PassengersDown = 0;
+				break;
+			    case 3:
+				$scope.f3PassengersDown = 0;
+				break;
+			    case 4:
+				$scope.f4Passengers = 0;
+				break;
+			    }	
+			    break;
+		    }
+		}
 
 	        var addPassenger = function(fl, dir) {
+		    var passenger = new Passenger(Date.now(), fl, dir);
+		    $scope.stats.passengers.push(passenger);
+		    $scope.stats.totalPassengers += 1;
 		    switch (dir) {
 			case 1:
 			    switch (fl) {
