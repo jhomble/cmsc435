@@ -26,8 +26,24 @@ angular.module('myApp.view2', ['ngRoute'])
 			this.requestState = 0;			  // 0 = Idle, 1 = Going to floor, 2 = On floor w/ elevator request
 		};
 
+	        var Statistics = function () {
+		    this.totalPassengers = 0;
+		    this.averageWaitTime = 0.0;
+		}
+
 		var el1 = new Elevator(1);
 		var el2 = new Elevator(2);
+
+	        $scope.stats = new Statistics();
+
+	        $scope.f1Passengers = 0;
+	        $scope.f4Passengers = 0;
+
+	        $scope.f2PassengersUp = 0;
+	        $scope.f3PassengersUp = 0;
+	        $scope.f2PassengersDown = 0;
+	        $scope.f3PassengersDown = 0;
+
 
 		// Updates the action text for given elevator with id with given actionText
 		var UpdateAction = function (id, actionText) {
@@ -475,9 +491,42 @@ angular.module('myApp.view2', ['ngRoute'])
 			}
 		};
 
+	        var addPassenger = function(fl, dir) {
+		    switch (dir) {
+			case 1:
+			    switch (fl) {
+			    case 1:
+				$scope.f1Passengers++;
+				break;
+			    case 2:
+				$scope.f2PassengersUp++;
+				break;
+			    case 3:
+				$scope.f3PassengersUp++;
+				break;
+			    }
+			    break;
+			case -1:
+			    switch (fl) {
+			    case 2:
+				$scope.f2PassengersDown++;
+				break;
+			    case 3:
+				$scope.f3PassengersDown++;
+				break;
+			    case 4:
+				$scope.f4Passengers++;
+				break;
+			    }	
+			    break;
+		    }
+		}
+
 		// Sets floor of elevator "closest" to call
 		//    - "closest" determined by FS value
 		this.answerCall = function (fl, dir) {
+
+		        addPassenger(fl, dir);
 
 			if (dir === 1) {
 				$scope.toggleButton(3, fl*2 - 1, false);
@@ -531,7 +580,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			    } else {//on the move to get to requested floor
 				elevator.requestState = 1;
 			    }
-			    alert("Elevator requested");
+			    //alert("Elevator requested");
 			    if (dir > 0){
 				registerElevatorWithDirection(elevator, fl, 1); // 1 is up floor button pushed
 			    } else {
@@ -578,12 +627,12 @@ angular.module('myApp.view2', ['ngRoute'])
 
 		this.getE1Floor = function () {
 			checkFloor(1);
-			return el1.floor;
+			return Number((el1.floor).toFixed(3));
 		};
 
 		this.getE2Floor = function () {
 			checkFloor(2);
-			return el2.floor;
+			return Number((el2.floor).toFixed(3));
 		};
 
 	}]);

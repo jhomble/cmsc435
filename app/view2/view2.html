@@ -9,13 +9,31 @@
       </div>
     </div>
 
-    <!--Show Current Elevator Floor (This should eventually get removed!)-->
-    <div class="row" ng-show="debug">
-      <div class="col-xs-12">
-        <h4 style="text-align: center">E1: f = {{ v2.getE1Floor() }}, d = {{ v2.getE1Direction() }}, q = {{ v2.getE1Queue() }}</h4>
-        <h4 style="text-align: center">E2: f = {{ v2.getE2Floor() }}, d = {{ v2.getE2Direction() }}, q = {{ v2.getE2Queue() }}</h4>
+    <!--Start of first row-->
+    <!--Putting headers here and what should go on-->
+    <div class="row">
+      <!--First Elevator-->
+      <div class="col-xs-3 col-xs-offset-1">
+        <div class="row">
+          <h3 style="text-align: center"> Debug </h3>
+        </div>
+        <div class="row">
+          <h4 style="text-align: center"> E1: f = {{ v2.getE1Floor() }}, d = {{ v2.getE1Direction() }}, q = {{ v2.getE1Queue() }} </h4>
+          <h4 style="text-align: center"> E2: f = {{ v2.getE2Floor() }}, d = {{ v2.getE2Direction() }}, q = {{ v2.getE2Queue() }} </h4>
+        </div>
+      </div>
+      <!--Second Elevator-->
+      <div class="col-xs-3 col-xs-offset-4">
+        <div class="row">
+          <h3 style="text-align: center"> Statistics </h3>
+        </div>
+        <div class="row">
+          <h4 style="text-align: center"> Total Passengers: {{ stats.totalPassengers }} </h4>
+          <h4 style="text-align: center"> Average Wait Time per Passenger: {{ stats.averageWaitTime }} </h4>
+        </div>
       </div>
     </div>
+
 
     <!--Start of first row-->
     <!--Putting headers here and what should go on-->
@@ -109,6 +127,7 @@
         <div class="col-xs-3">
           <!--<button type="submit" class="btn btn-primary" ng-click="v2.answerCall(4, 1)">Up</button>-->
           <button type="submit" ng-class="f4d" ng-click="v2.answerCall(4, -1)">Down</button>
+          <h4 style="text-align: center">Passengers Waiting: {{ f4Passengers }}</h4>
         </div>
       </div>
     </div>
@@ -182,6 +201,8 @@
         <div class="col-xs-3">
           <button type="submit" ng-class="f3u" ng-click="v2.answerCall(3, 1)">Up</button>
           <button type="submit" ng-class="f3d" ng-click="v2.answerCall(3, -1)">Down</button>
+          <h4 style="text-align: center">Passengers Waiting (Up): {{ f3PassengersUp }}</h4>
+          <h4 style="text-align: center">Passengers Waiting (Down): {{ f3PassengersDown }}</h4>
         </div>
       </div>
     </div>
@@ -254,6 +275,8 @@
         <div class="col-xs-3">
           <button type="submit" ng-class="f2u" ng-click="v2.answerCall(2, 1)">Up</button>
           <button type="submit" ng-class="f2d" ng-click="v2.answerCall(2, -1)">Down</button>
+           <h4 style="text-align: center">Passengers Waiting (Up): {{ f2PassengersUp }}</h4>
+           <h4 style="text-align: center">Passengers Waiting (Down): {{ f2PassengersDown }}</h4>
         </div>
       </div>
     </div>
@@ -326,6 +349,7 @@
         <div class="col-xs-3">
           <button type="submit" ng-class="f1u" ng-click="v2.answerCall(1, 1)">Up</button>
           <!--<button type="submit" class="btn btn-info" ng-click="v2.answerCall(1, 0)">Down</button>-->
+          <h4 style="text-align: center">Passengers Waiting: {{ f1Passengers }}</h4>
         </div>
       </div>
     </div>
