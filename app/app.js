@@ -11,5 +11,9 @@ angular.module('myApp', [
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
 
-  $routeProvider.otherwise({redirectTo: '/view1'});
+  $routeProvider
+  .when('/help', {
+    templateUrl: '/view2/help.html'
+  })
+  .otherwise({redirectTo: '/view1'});
 }]);

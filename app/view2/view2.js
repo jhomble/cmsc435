@@ -68,14 +68,14 @@ angular.module('myApp.view2', ['ngRoute'])
 		updateAction(1, "Idle")
 		updateAction(2, "Idle")
 
-		$scope.e1b1 = "btn btn-primary"
-		$scope.e1b2 = "btn btn-primary"
-		$scope.e1b3 = "btn btn-primary"
-		$scope.e1b4 = "btn btn-primary"
-		$scope.e2b1 = "btn btn-primary"
-		$scope.e2b2 = "btn btn-primary"
-		$scope.e2b3 = "btn btn-primary"
-		$scope.e2b4 = "btn btn-primary"
+		$scope.e1b1 = "btn btn-default"
+		$scope.e1b2 = "btn btn-default"
+		$scope.e1b3 = "btn btn-default"
+		$scope.e1b4 = "btn btn-default"
+		$scope.e2b1 = "btn btn-default"
+		$scope.e2b2 = "btn btn-default"
+		$scope.e2b3 = "btn btn-default"
+		$scope.e2b4 = "btn btn-default"
 		$scope.f1u = "btn btn-primary"
 		$scope.f1d = "btn btn-primary"
 		$scope.f2u = "btn btn-primary"
@@ -93,19 +93,19 @@ angular.module('myApp.view2', ['ngRoute'])
 				case 1:
 					switch (number) {
 						case 1:
-							if (bool) { $scope.e1b1 = "btn btn-primary" }
+							if (bool) { $scope.e1b1 = "btn btn-default" }
 							else { $scope.e1b1 = "btn btn-danger" }
 							break;
 						case 2:
-							if (bool) { $scope.e1b2 = "btn btn-primary" }
+							if (bool) { $scope.e1b2 = "btn btn-default" }
 							else { $scope.e1b2 = "btn btn-danger" }
 							break;
 						case 3:
-							if (bool) { $scope.e1b3 = "btn btn-primary" }
+							if (bool) { $scope.e1b3 = "btn btn-default" }
 							else { $scope.e1b3 = "btn btn-danger" }
 							break;
 						case 4:
-							if (bool) { $scope.e1b4 = "btn btn-primary" }
+							if (bool) { $scope.e1b4 = "btn btn-default" }
 							else { $scope.e1b4 = "btn btn-danger" }
 							break;
 						default:
@@ -116,19 +116,19 @@ angular.module('myApp.view2', ['ngRoute'])
 				case 2:
 					switch (number) {
 						case 1:
-							if (bool) { $scope.e2b1 = "btn btn-primary" }
+							if (bool) { $scope.e2b1 = "btn btn-default" }
 							else { $scope.e2b1 = "btn btn-danger" }
 							break;
 						case 2:
-							if (bool) { $scope.e2b2 = "btn btn-primary" }
+							if (bool) { $scope.e2b2 = "btn btn-default" }
 							else { $scope.e2b2 = "btn btn-danger" }
 							break;
 						case 3:
-							if (bool) { $scope.e2b3 = "btn btn-primary" }
+							if (bool) { $scope.e2b3 = "btn btn-default" }
 							else { $scope.e2b3 = "btn btn-danger" }
 							break;
 						case 4:
-							if (bool) { $scope.e2b4 = "btn btn-primary" }
+							if (bool) { $scope.e2b4 = "btn btn-default" }
 							else { $scope.e2b4 = "btn btn-danger" }
 							break;
 						default:
