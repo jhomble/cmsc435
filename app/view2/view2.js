@@ -649,18 +649,17 @@ angular.module('myApp.view2', ['ngRoute'])
 			    } else {//on the move to get to requested floor
 				elevator.requestState = 1;
 			    }
-<<<<<<< HEAD
-			    alert("Elevator "+elevator.id+ " requested");
-=======
+
+			    //alert("Elevator "+elevator.id+ " requested");
 			    //alert("Elevator requested");
->>>>>>> 5774452c0aaffe50169b978c1c73d4c26afb9d76
+
 			    if (dir > 0){
 				registerElevatorWithDirection(elevator, fl, 1); // 1 is up floor button pushed
 			    } else {
 				registerElevatorWithDirection(elevator, fl, 0);// 0 is down floor button pushed
 			    }
 			
-			}
+		    }
 
 			// Choose elevator that is "closer"
 			if (fs1 > fs2) {
