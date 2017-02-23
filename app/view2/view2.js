@@ -18,6 +18,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			this.floor = 1.0;
 			this.direction = 0;               // 1 = UP, 0 = IDLE, -1 = DOWN
 			this.queue = [];                  // Holds button calls from FLOOR BUTTONS (does NOT differentiate b/n up/down calls)
+			this.dirQueue=[];				  // Holds Direction pushed for the corresponding floor request
 			this.waitTime = 0;                // Should only be non-zero if stopped at floor for pick-up
 			this.waitingQue = [];             // Holds button calls from ELEVATORS
 			this.id = id;					  // Elevator number
@@ -162,8 +163,12 @@ angular.module('myApp.view2', ['ngRoute'])
 						if (floor === el1.floor) {
 							el1.waitingQue.splice(index, 1)
 							$scope.toggleButton(1, floor, true);
+							
+							
 						}
+							
 					})
+					
 					// Turn off Up:
 					if (el1.direction > 0)
 						$scope.toggleButton(3, (el1.floor * 2) - 1, true)
@@ -359,6 +364,13 @@ angular.module('myApp.view2', ['ngRoute'])
 						elevator.queue.splice(index, 1);
 						elevator.waitTime = 1;
 						elevator.floorCount++;
+						var temp = elevator.dirQueue.pop();
+						console.log("dirQueue has element" + temp);
+						if (temp % 2 > 0 && temp != 0){
+							$scope.toggleButton(3, (elevator.floor * 2) - 1, true);
+						} else if (temp % 2== 0 && temp != 0){
+							$scope.toggleButton(3, elevator.floor * 2, true);
+						}
 					}
 					
 					//Want to change requestState in here so that we are certain to have traversed to
@@ -414,6 +426,7 @@ angular.module('myApp.view2', ['ngRoute'])
 		})
 
 		// Adds call to elevator queue and adjusts direction
+		// Does not care about the direction of floor button that called it.
 		var registerElevator = function (elevator, fl) {
 			var newDir = 0;
 			if (elevator.queue.length == 0) {
@@ -424,6 +437,29 @@ angular.module('myApp.view2', ['ngRoute'])
 			if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
 				elevator.queue.push(fl);
 				elevator.queue.sort();
+				elevator.dirQueue.push((fl*2));
+				elevator.dirQueue.sort();
+			}
+			elevator.direction = newDir;
+
+		};
+		
+		/* For filling a direction queue with values that will allow us to shut off
+		   the certain up or down floor button that called us, it goes hand in hand with
+		   the elevator.queue.
+		*/
+		var registerElevatorWithDirection = function (elevator, fl, dirPushed) {
+			var newDir = 0;
+			if (elevator.queue.length == 0) {
+				newDir = getDirection(fl, elevator.floor);
+			} else {
+				newDir = elevator.direction;
+			}
+			if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
+				elevator.queue.push(fl);
+				elevator.queue.sort();
+				elevator.dirQueue.push((fl*2) - dirPushed);
+				elevator.dirQueue.sort();
 			}
 			elevator.direction = newDir;
 
@@ -483,25 +519,44 @@ angular.module('myApp.view2', ['ngRoute'])
 
 			// Choose elevator that is "closer"
 			if (fs1 > fs2) {
-				if (el1.floor == fl ){
+				if (el1.floor == fl ){ //we have arrived at floor button that called us
 					el1.requestState = 2;
-				} else if (el1.direction!=0) {
-					el1.requestState = 2;
-				} else {
+				} else if (el1.direction != 0) { //on the move, possibly done requests
+					if (el1.queue.includes(fl)){//going to a floor that needs a call, shift to state 1
+						el1.requestState = 1;
+					} else {//proceed to state 2, no other call to do besides get to target floor
+						el1.requestState = 2;
+					}
+					
+				} else {//on the move to get to requested floor
 					el1.requestState = 1;
 				}
 				alert("Elevator 1 requested");
-				registerElevator(el1, fl);
-			} else {
-				if (el2.floor == fl ){
-					el2.requestState = 2;
-				} else if (el2.direction != 0) {
-					el2.requestState = 2;
+				if (dir > 0){
+					registerElevatorWithDirection(el1, fl, 1); // 1 is up floor button pushed
 				} else {
+					registerElevatorWithDirection(el1, fl, 0);// 0 is down floor button pushed
+				}
+				
+			} else {
+				if (el2.floor == fl ){ //we have arrived at floor button that called us
+					el2.requestState = 2;
+				} else if (el2.direction != 0) { //on the move, possibly done requests
+					if (el2.queue.includes(fl)){ //going to a floor that needs a call, shift to state 1
+						el2.requestState = 1;
+					} else {//proceed to state 2, no other call to do besides get to target floor
+						el2.requestState = 2;
+					}
+				} else {//on the move to get to requested floor
 					el2.requestState = 1;
 				}
-				registerElevator(el2, fl);
+				
 				alert("Elevator 2 requested");
+				if (dir > 0){
+					registerElevatorWithDirection(el2, fl, 1); // 1 is up floor button pushed
+				} else {
+					registerElevatorWithDirection(el2, fl, 0);// 0 is down floor button pushed
+				}
 			}
 		};
 
