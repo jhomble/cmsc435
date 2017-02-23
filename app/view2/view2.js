@@ -609,7 +609,10 @@ angular.module('myApp.view2', ['ngRoute'])
 			var getFS = function (f, d, e) {
 				var fs = 4 - Math.abs(e.floor - f);
 
-				if ((e.direction == 1 && f < e.floor) ||
+			        console.log("elevator: "+ e.id+", direction: "+e.direction+", floor: "+e.floor);
+			        if (e.direction == 0 && e.floor == f){
+				    fs = 10 // just some big number, if it is on the same floor and inactive it needs to respond
+				} else if ((e.direction == 1 && f < e.floor) ||
 					(e.direction == -1 && f > e.floor) ||
 					(e.direction != d) && (f == e.floor)) {
 					fs = 1;
