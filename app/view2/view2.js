@@ -76,14 +76,14 @@ angular.module('myApp.view2', ['ngRoute'])
 		$scope.e2b2 = "btn btn-default"
 		$scope.e2b3 = "btn btn-default"
 		$scope.e2b4 = "btn btn-default"
-		$scope.f1u = "btn btn-primary"
-		$scope.f1d = "btn btn-primary"
-		$scope.f2u = "btn btn-primary"
-		$scope.f2d = "btn btn-primary"
-		$scope.f3u = "btn btn-primary"
-		$scope.f3d = "btn btn-primary"
-		$scope.f4u = "btn btn-primary"
-		$scope.f4d = "btn btn-primary"
+		$scope.f1u = "btn btn-default"
+		$scope.f1d = "btn btn-default"
+		$scope.f2u = "btn btn-default"
+		$scope.f2d = "btn btn-default"
+		$scope.f3u = "btn btn-default"
+		$scope.f3d = "btn btn-default"
+		$scope.f4u = "btn btn-default"
+		$scope.f4d = "btn btn-default"
 
 		// I'm just gonna make it that floor 1 up = 1, floor 1 down = 2, floor 2 up = 3... for button value
 		$scope.toggleButton = function (elevator, number, bool) {
@@ -140,35 +140,35 @@ angular.module('myApp.view2', ['ngRoute'])
 					//Floor buttons
 					switch (number) {
 						case 1:
-							if (bool) { $scope.f1u = "btn btn-primary" }
+							if (bool) { $scope.f1u = "btn btn-default" }
 							else { $scope.f1u = "btn btn-danger" }
 							break;
 						case 2:
-							if (bool) { $scope.f1d = "btn btn-primary" }
+							if (bool) { $scope.f1d = "btn btn-default" }
 							else { $scope.f1d = "btn btn-danger" }
 							break;
 						case 3:
-							if (bool) { $scope.f2u = "btn btn-primary" }
+							if (bool) { $scope.f2u = "btn btn-default" }
 							else { $scope.f2u = "btn btn-danger" }
 							break;
 						case 4:
-							if (bool) { $scope.f2d = "btn btn-primary" }
+							if (bool) { $scope.f2d = "btn btn-default" }
 							else { $scope.f2d = "btn btn-danger" }
 							break;
 						case 5:
-							if (bool) { $scope.f3u = "btn btn-primary" }
+							if (bool) { $scope.f3u = "btn btn-default" }
 							else { $scope.f3u = "btn btn-danger" }
 							break;
 						case 6:
-							if (bool) { $scope.f3d = "btn btn-primary" }
+							if (bool) { $scope.f3d = "btn btn-default" }
 							else { $scope.f3d = "btn btn-danger" }
 							break;
 						case 7:
-							if (bool) { $scope.f4u = "btn btn-primary" }
+							if (bool) { $scope.f4u = "btn btn-default" }
 							else { $scope.f4u = "btn btn-danger" }
 							break;
 						case 8:
-							if (bool) { $scope.f4d = "btn btn-primary" }
+							if (bool) { $scope.f4d = "btn btn-default" }
 							else { $scope.f4d = "btn btn-danger" }
 							break;
 					}

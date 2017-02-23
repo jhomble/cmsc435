@@ -35,37 +35,41 @@
 </style>
 
 
-<div class="row" style="background-color: #f2f2f2" ng-controller="View2Ctrl as v2">
-  <div class="row" style="background-color: #f2f2f2">
-    <div class="col-xs-12">
-      <h2 style="text-align: center">Elevator Simulator</h2>
+<div class="row" style="background-color: #ffffff" ng-controller="View2Ctrl as v2">
+    <div class="jumbotron">
+      <div class="container">
+        <h1>AVW Elevator Simulator</h1>
+        <p><a class="btn btn-primary btn-lg" href="#!/help" role="button">Help and Information &raquo;</a></p>
+      </div>
     </div>
-  </div>
-  <div class="row" style="background-color: #f2f2f2">
-    <div class="col-xs-12" style="text-align:center">
-      <a href="#!/help">Info Page</a>
-    </div>
-  </div>
 
   <!--Start of first row-->
   <!--Putting headers here and what should go on-->
-  <div class="row" style="background-color: #f2f2f2">
+  <div class="row" style="background-color: #">
     <!--First Elevator-->
-    <div class="col-xs-3 col-xs-offset-1">
+    <div class="col-xs-5 col-xs-offset-1">
       <div class="row">
-        <h3 style="text-align: center"> Elevator Status </h3>
+        <h2 style="text-align: center"> Elevator Status </h2>
+        <br>
       </div>
       <div class="row">
-        <h4 style="text-align: center"> Elevator 1: {{ e1Action}} </h4>
-        <h4 style="text-align: center" ng-show="debug"> f = {{ v2.getE1Floor() }}, d = {{ v2.getE1Direction() }}, q = {{ v2.getE1Queue() }} </h4>
-        <h4 style="text-align: center"> Elevator 2: {{ e2Action}} </h4>
-        <h4 style="text-align: center" ng-show="debug"> f = {{ v2.getE2Floor() }}, d = {{ v2.getE2Direction() }}, q = {{ v2.getE2Queue() }} </h4>
+        <div class="col-xs-6" style="text-align:center">
+          <h4 style="text-align: center"> Elevator 1: {{ e1Action}} </h4>
+          <h4 style="text-align: center" ng-show="debug"> f = {{ v2.getE1Floor() }}, d = {{ v2.getE1Direction() }}, q = {{ v2.getE1Queue() }} </h4>
+        </div>
+        <div class="col-xs-6" style="text-align:center">
+
+          <h4 style="text-align: center"> Elevator 2: {{ e2Action}} </h4>
+          <h4 style="text-align: center" ng-show="debug"> f = {{ v2.getE2Floor() }}, d = {{ v2.getE2Direction() }}, q = {{ v2.getE2Queue() }} </h4>
+
+        </div>
       </div>
     </div>
     <!--Second Elevator-->
-    <div class="col-xs-3 col-xs-offset-4">
+    <div class="col-xs-5 col-xs-offset-1">
       <div class="row">
-        <h3 style="text-align: center"> Statistics </h3>
+        <h2 style="text-align: center"> Statistics </h2>
+        <br>
       </div>
       <div class="row">
         <h4 style="text-align: center"> Total Passengers: {{ stats.totalPassengers }} </h4>
@@ -76,7 +80,8 @@
 
   <p></p>
   <div class="row">
-    <div class="col-xs-10 col-xs-offset-1" style="border-style: solid">
+    <div class="col-xs-10 col-xs-offset-1" style="border-style: solid; background-color: #faefef">
+      <br>
       <!--Floors-->
       <!--Fourth Floor-->
       <div class="row">
@@ -106,7 +111,7 @@
                 </div>
               </div>
             </div>
-               
+
             <div ng-show="!v2.isE1AtFloor(4)" class="col-xs-6"></div>
             <div ng-show="v2.isE2AtFloor(4)" class="col-xs-6">
               <div class="row">
@@ -131,7 +136,7 @@
                 </div>
               </div>
             </div>
-                
+
             <div ng-show="!v2.isE2AtFloor(4)" class="col-xs-6"></div>
           </div>
           <div class="col-xs-1">
@@ -139,9 +144,9 @@
             <br>
           </div>
           <!--Floor Buttons-->
-          <div class="col-xs-3">
+          <div class="col-xs-3" style="text-align:center">
             <!--<button type="submit" class="btn btn-primary" ng-click="v2.answerCall(4, 1)">Up</button>-->
-            <button type="submit" ng-class="f4d" ng-click="v2.answerCall(4, -1)">Down</button>
+            <button type="submit" class="btn-circle btn-lg" ng-class="f4d" ng-click="v2.answerCall(4, -1)">&darr;</button>
             <h4 style="text-align: center">Passengers Waiting: {{ f4Passengers }}</h4>
           </div>
         </div>
@@ -176,7 +181,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div ng-show="!v2.isE1AtFloor(3)" class="col-xs-6"></div>
             <div ng-show="v2.isE2AtFloor(3)" class="col-xs-6">
               <div class="row">
@@ -209,9 +214,9 @@
             <br>
           </div>
           <!--Floor Buttons-->
-          <div class="col-xs-3">
-            <button type="submit" ng-class="f3u" ng-click="v2.answerCall(3, 1)">Up</button>
-            <button type="submit" ng-class="f3d" ng-click="v2.answerCall(3, -1)">Down</button>
+          <div class="col-xs-3" style="text-align:center">
+            <button type="submit" class="btn-circle btn-lg" ng-class="f3u" ng-click="v2.answerCall(3, 1)">&uarr;</button>
+            <button type="submit" class="btn-circle btn-lg" ng-class="f3d" ng-click="v2.answerCall(3, -1)">&darr;</button>
             <h4 style="text-align: center">Passengers Waiting (Up): {{ f3PassengersUp }}</h4>
             <h4 style="text-align: center">Passengers Waiting (Down): {{ f3PassengersDown }}</h4>
           </div>
@@ -246,7 +251,7 @@
                 </div>
               </div>
             </div>
-              
+
             <div ng-show="!v2.isE1AtFloor(2)" class="col-xs-6"></div>
             <div ng-show="v2.isE2AtFloor(2)" class="col-xs-6">
               <div class="row">
@@ -278,9 +283,9 @@
             <br>
           </div>
           <!--Floor Buttons-->
-          <div class="col-xs-3">
-            <button type="submit" ng-class="f2u" ng-click="v2.answerCall(2, 1)">Up</button>
-            <button type="submit" ng-class="f2d" ng-click="v2.answerCall(2, -1)">Down</button>
+          <div class="col-xs-3" style="text-align:center">
+            <button type="submit" class="btn-circle btn-lg" ng-class="f2u" ng-click="v2.answerCall(2, 1)">&uarr;</button>
+            <button type="submit" class="btn-circle btn-lg" ng-class="f2d" ng-click="v2.answerCall(2, -1)">&darr;</button>
             <h4 style="text-align: center">Passengers Waiting (Up): {{ f2PassengersUp }}</h4>
             <h4 style="text-align: center">Passengers Waiting (Down): {{ f2PassengersDown }}</h4>
           </div>
@@ -346,8 +351,8 @@
             <br>
           </div>
           <!--Floor Buttons-->
-          <div class="col-xs-3">
-            <button type="submit" ng-class="f1u" ng-click="v2.answerCall(1, 1)">Up</button>
+          <div class="col-xs-3" style="text-align:center">
+            <button type="submit" class="btn-circle btn-lg" ng-class="f1u" ng-click="v2.answerCall(1, 1)">&uarr;</button>
             <!--<button type="submit" class="btn btn-info" ng-click="v2.answerCall(1, 0)">Down</button>-->
             <h4 style="text-align: center">Passengers Waiting: {{ f1Passengers }}</h4>
           </div>
