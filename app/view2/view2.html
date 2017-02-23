@@ -47,37 +47,38 @@
   <!--Putting headers here and what should go on-->
   <div class="row">
     <!--First Elevator-->
-    <div class="col-xs-5 col-xs-offset-1">
-      <div class="row">
-        <h2 style="text-align: center"> Elevator Status </h2>
-        <br>
-      </div>
-      <div class="row">
-        <div class="col-xs-6" style="text-align:center">
-          <h4 style="text-align: center"> Elevator 1: {{ e1Action}} </h4>
-          <h4 style="text-align: center" ng-show="debug"> f = {{ v2.getE1Floor() }}, d = {{ v2.getE1Direction() }}, q = {{ v2.getE1Queue() }} </h4>
+    <div class="col-xs-10 col-xs-offset-1">
+      <div class="col-xs-7">
+        <div class="row">
+          <h2 style="text-align: center"> Elevator Status </h2>
+          <br>
         </div>
-        <div class="col-xs-6" style="text-align:center">
+        <div class="row">
+          <div class="col-xs-6" style="text-align:center">
+            <h4 style="text-align: center"> Elevator 1: {{ e1Action}} </h4>
+            <h4 style="text-align: center" ng-show="debug"> f = {{ v2.getE1Floor() }}, d = {{ v2.getE1Direction() }}, q = {{ v2.getE1Queue() }} </h4>
+          </div>
+          <div class="col-xs-6" style="text-align:center">
 
-          <h4 style="text-align: center"> Elevator 2: {{ e2Action}} </h4>
-          <h4 style="text-align: center" ng-show="debug"> f = {{ v2.getE2Floor() }}, d = {{ v2.getE2Direction() }}, q = {{ v2.getE2Queue() }} </h4>
+            <h4 style="text-align: center"> Elevator 2: {{ e2Action}} </h4>
+            <h4 style="text-align: center" ng-show="debug"> f = {{ v2.getE2Floor() }}, d = {{ v2.getE2Direction() }}, q = {{ v2.getE2Queue() }} </h4>
 
+          </div>
         </div>
       </div>
-    </div>
-    <!--Second Elevator-->
-    <div class="col-xs-4 col-xs-offset-1">
-      <div class="row">
-        <h2 style="text-align: center"> Statistics </h2>
-        <br>
-      </div>
-      <div class="row">
-        <h4 style="text-align: center"> Total Passengers: {{ stats.totalPassengers }} </h4>
-        <h4 style="text-align: center"> Average Passenger Wait Time (seconds): {{ v2.getAverageWait() }} </h4>
+      <!--Second Elevator-->
+      <div class="col-xs-3 col-xs-offset-1">
+        <div class="row"> 
+          <h2 style="text-align: center"> Statistics </h2>
+          <br>
+        </div>
+        <div class="row">
+          <h4 style="text-align: center"> Total Passengers: {{ stats.totalPassengers }} </h4>
+          <h4 style="text-align: center"> Average Passenger Wait Time (seconds): {{ v2.getAverageWait() }} </h4>
+        </div>
       </div>
     </div>
   </div>
-
   <p></p>
   <div class="row">
     <div class="col-xs-10 col-xs-offset-1" style="border-style: solid; background-color: #c2cfc5">
@@ -371,7 +372,6 @@
         </div>
       </div>
       <p style="border-style: solid"></p>
-      </div>
+    </div>
   </div>
-  <br>
 </div>
