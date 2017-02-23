@@ -441,13 +441,13 @@ angular.module('myApp.view2', ['ngRoute'])
 
 		 $interval(function () {
 			 updateElevator(el1);
-		 }, 60).then(function () {
+		 }, 100).then(function () {
 			 checkFloor(1)
 		 })
 
 		 $interval(function () {
 			 updateElevator(el2);
-		 }, 60).then(function () {
+		 }, 100).then(function () {
 			 checkFloor(2)
 		 })
 
@@ -601,10 +601,8 @@ angular.module('myApp.view2', ['ngRoute'])
 			}
 			var getFS = function (f, d, e) {
 				var fs = 4 - Math.abs(e.floor - f);
-				console.log("elevator: "+ e.id+", direction: "+e.direction+", floor: "+e.floor);
-				if (e.direction == 0 && e.floor == f){
-					fs = 10 // just some big number, if it is on the same floor and inactive it needs to respond
-				} else if ((e.direction == 1 && f < e.floor) ||
+
+				if ((e.direction == 1 && f < e.floor) ||
 					(e.direction == -1 && f > e.floor) ||
 					(e.direction != d) && (f == e.floor)) {
 					fs = 1;
@@ -621,13 +619,12 @@ angular.module('myApp.view2', ['ngRoute'])
 
 			var fs1 = getFS(fl, dir, el1);
 			var fs2 = getFS(fl, dir, el2);
-			//console.log("fs1 is "+ fs1+ " and fs2 is "+fs2);
+
 			// For debugging
 			//alert(fs1.toString() + " and " + fs2.toString());
 
 			// Randomly choose if neither is "closer"
 			if (fs1 == fs2) {
-				console.log("fs are equal");
 				var rand = Math.random();
 				if (rand > .5) {
 					fs1++;
@@ -636,7 +633,7 @@ angular.module('myApp.view2', ['ngRoute'])
 				}
 			}
 
-		    var chooseElevator = function (elevator) {
+		        var chooseElevator = function (elevator) {
 			    if (elevator.floor == fl ){ //we have arrived at floor button that called us
 				elevator.requestState = 2;
 			    } else if (elevator.direction != 0) { //on the move, possibly done requests
@@ -649,17 +646,14 @@ angular.module('myApp.view2', ['ngRoute'])
 			    } else {//on the move to get to requested floor
 				elevator.requestState = 1;
 			    }
-
-			    //alert("Elevator "+elevator.id+ " requested");
 			    //alert("Elevator requested");
-
 			    if (dir > 0){
 				registerElevatorWithDirection(elevator, fl, 1); // 1 is up floor button pushed
 			    } else {
 				registerElevatorWithDirection(elevator, fl, 0);// 0 is down floor button pushed
 			    }
 			
-		    }
+			}
 
 			// Choose elevator that is "closer"
 			if (fs1 > fs2) {
@@ -706,6 +700,11 @@ angular.module('myApp.view2', ['ngRoute'])
 			checkFloor(2);
 			return Number((el2.floor).toFixed(3));
 		};
+
+
+	        this.getAverageWait = function () {
+		    return Number(($scope.stats.averageWaitTime).toFixed(3));
+		}
 
 	}]);
 
