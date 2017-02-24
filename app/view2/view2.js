@@ -386,6 +386,21 @@ angular.module('myApp.view2', ['ngRoute'])
 		var updateElevator = function (elevator) {
 			if (elevator.waitTime > 0) {
 				elevator.waitTime -= 0.01;
+				elevator.queue.forEach(function (floor, index) {
+					if (elevator.floor == floor) {
+						elevator.queue.splice(index, 1);
+						elevator.waitTime += 0.25;
+						 var temp = elevator.dirQueue.pop();
+						 console.log("dirQueue has element" + temp);
+						 if (temp % 2 > 0 && temp != 0){
+							 $scope.toggleButton(3, (elevator.floor * 2) - 1, true);
+							 resetPassengers(floor, 1);
+						 } else if (temp % 2== 0 && temp != 0){
+							 $scope.toggleButton(3, elevator.floor * 2, true);
+							 resetPassengers(floor, -1);
+						 }
+					 }
+				 });
 			} else {
 				// Check if elevator is close to any of the floors on the queue
 				//    - if so, stop and remove that floor from the queue
