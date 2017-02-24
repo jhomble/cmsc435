@@ -197,15 +197,16 @@ angular.module('myApp.view2', ['ngRoute'])
 					})
 					
 					// Turn off Up:
+					/*
 					if (el1.direction > 0) {
 						$scope.toggleButton(3, (el1.floor * 2) - 1, true);
 					        resetPassengers(el1.floor, 1);
-					}			    
+					}	*/		    
 					// Turn off Down:
-					if (el1.direction < 0) {
+					/*if (el1.direction < 0) {
 						$scope.toggleButton(3, el1.floor * 2, true);
 			                        resetPassengers(el1.floor, -1);
-					}
+					}*/
 					break;
 				case 2:
 					el2.waitingQue.forEach(function (floor, index) {
@@ -215,15 +216,15 @@ angular.module('myApp.view2', ['ngRoute'])
 						}
 					})
 					// Turn off Up:
-					if (el2.direction > 0) {
+					/*if (el2.direction > 0) {
 						$scope.toggleButton(3, (el2.floor * 2) - 1, true);
 			                        resetPassengers(el2.floor, 1);
-					}
+					}*/
 					// Turn off Down:
-					if (el2.direction < 0) {
+					/*if (el2.direction < 0) {
 						$scope.toggleButton(3, el2.floor * 2, true);
 			                        resetPassengers(el2.floor, -1);
-					}
+					}*/
 					break;
 			}
 		}
@@ -413,7 +414,7 @@ angular.module('myApp.view2', ['ngRoute'])
 						elevator.queue.splice(index, 1);
 						elevator.waitTime = 1;
 						 elevator.floorCount++;
-						 var temp = elevator.dirQueue.pop();
+						 var temp = elevator.dirQueue.shift();
 						 console.log("dirQueue has element" + temp);
 						 if (temp % 2 > 0 && temp != 0){
 							 $scope.toggleButton(3, (elevator.floor * 2) - 1, true);
@@ -479,6 +480,7 @@ angular.module('myApp.view2', ['ngRoute'])
 		 // Adds call to elevator queue and adjusts direction
 		 // Does not care about the direction of floor button that called it.
 		 var registerElevator = function (elevator, fl) {
+			 console.log("Regular Register Elevator");
 			 var newDir = 0;
 			 if (elevator.queue.length == 0) {
 				 newDir = getDirection(fl, elevator.floor);
@@ -488,7 +490,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			 if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
 				 elevator.queue.push(fl);
 				 elevator.queue.sort();
-				 elevator.dirQueue.push((fl*2));
+				 elevator.dirQueue.push(fl*2);
 				 elevator.dirQueue.sort();
 			 }
 			 elevator.direction = newDir;
@@ -674,7 +676,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			    } else {//on the move to get to requested floor
 				elevator.requestState = 1;
 			    }
-			    //alert("Elevator requested");
+			    alert("Elevator " + elevator.id+" requested");
 			    if (dir > 0){
 				registerElevatorWithDirection(elevator, fl, 1); // 1 is up floor button pushed
 			    } else {
@@ -684,11 +686,56 @@ angular.module('myApp.view2', ['ngRoute'])
 			}
 
 			// Choose elevator that is "closer"
-			if (fs1 > fs2) {
-			    chooseElevator(el1);
-			} else {
-			    chooseElevator(el2);
+			if (dir > 0){
+				if ((el1.queue.includes(fl) && el1.dirQueue.includes((fl*2)-1)) || (el2.queue.includes(fl) && el2.dirQueue.includes((fl*2)-1))){
+					//do nothing
+				} else{
+					if (el2.floor == fl && el2.requestState ==2){
+						el2.waitTime += .1;
+					} else if (el1.floor == fl && el1.requestState ==2){
+						el1.waitTime += .1;
+					}else {
+						if (fs1 > fs2) {
+						
+							chooseElevator(el1);
+						
+					   
+						} else {
+							
+								chooseElevator(el2);
+							
+							
+							
+						}
+					}
+					
+				}
+			} else{
+				if ((el1.queue.includes(fl) && el1.dirQueue.includes(fl*2) || (el2.queue.includes(fl) && el2.dirQueue.includes(fl*2)))){
+					//do nothing
+				} else{
+					if (el2.floor == fl && el2.requestState ==2){
+						el2.waitTime += .1;
+					} else if (el1.floor == fl && el1.requestState ==2){
+						el1.waitTime += .1;
+					}else {
+						if (fs1 > fs2) {
+						
+							chooseElevator(el1);
+						
+					   
+						} else {
+							
+							chooseElevator(el2);
+							
+							
+							
+						}
+					}
+					
+				}
 			}
+			
 		};
 
 		this.getE1Queue = function () {
