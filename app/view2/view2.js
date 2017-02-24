@@ -216,15 +216,15 @@ angular.module('myApp.view2', ['ngRoute'])
 						}
 					})
 					// Turn off Up:
-					/*if (el2.direction > 0) {
+					if (el2.direction > 0) {
 						$scope.toggleButton(3, (el2.floor * 2) - 1, true);
 			                        resetPassengers(el2.floor, 1);
-					}*/
+					}
 					// Turn off Down:
-					/*if (el2.direction < 0) {
+					if (el2.direction < 0) {
 						$scope.toggleButton(3, el2.floor * 2, true);
 			                        resetPassengers(el2.floor, -1);
-					}*/
+					}
 					break;
 			}
 		}
