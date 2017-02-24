@@ -12,7 +12,7 @@ angular.module('myApp.view2', ['ngRoute'])
 	.controller('View2Ctrl', ['$scope', '$interval', function ($scope, $interval) {
 
 		// Set to false if NOT debugging
-		$scope.debug = true;
+		$scope.debug = false;
 
 		var Elevator = function (id) {
 			this.floor = 1.0;
@@ -465,6 +465,49 @@ angular.module('myApp.view2', ['ngRoute'])
 
 		 };
 
+	         // check if the floor and direction are on either elevator queues
+	         var notOnQueue = function(floor, direction) {
+		     switch (direction) {
+			 case 1:
+			    return ((el1.queue.indexOf(floor) == -1) && (el1.dirQueue.indexOf(floor*2 - 1) == -1)) && 
+			           ((el2.queue.indexOf(floor) == -1) && (el2.dirQueue.indexOf(floor*2 - 1) == -1));
+			    break;
+			 case -1:
+			    return ((el1.queue.indexOf(floor) == -1) && (el1.dirQueue.indexOf(floor*2) == -1)) && 
+			           ((el2.queue.indexOf(floor) == -1) && (el2.dirQueue.indexOf(floor*2) == -1));
+			    break;
+		     }
+		 };
+
+	         // Pick up stranded people if needed
+	         var getRogueCall = function(floor, direction, numWaiting) {
+		     if (numWaiting > 0 && notOnQueue(floor, direction)) {
+			 var rand = Math.random();
+			 //alert("Floor: " + floor.toString() + ", Direction: " + direction.toString());
+			 if (rand > .5) {
+			     chooseElevator2(el1, floor, direction);
+			 } else {
+			     chooseElevator2(el2, floor, direction);
+			 }
+			 
+		     }
+		 }
+
+	         // This shouldn't be needed, but it ensures that no errors are made 
+	         // and passengers are stranded waiting for an elevator
+	         var sanityCheck = function() {
+		     getRogueCall(1, 1, $scope.f1Passengers); 
+		     getRogueCall(2, 1, $scope.f2PassengersUp); 
+		     getRogueCall(2, -1, $scope.f2PassengersDown); 
+		     getRogueCall(3, 1, $scope.f3PassengersUp); 
+		     getRogueCall(3, -1, $scope.f3PassengersDown); 
+		     getRogueCall(4, -1, $scope.f4Passengers); 
+		 }
+
+	         $interval(function () {
+		     sanityCheck();
+		 },1000)
+
 		 $interval(function () {
 			 updateElevator(el1);
 		 }, 100).then(function () {
@@ -508,7 +551,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			 } else {
 				 newDir = elevator.direction;
 			 }
-			 if ((elevator.queue.indexOf(fl) == -1) && (elevator.floor != fl)) {
+			 if ((elevator.queue.indexOf(fl) == -1) /*&& (elevator.floor != fl)*/) {
 				 elevator.queue.push(fl);
 				 elevator.queue.sort();
 				 elevator.dirQueue.push((fl*2) - dirPushed);
@@ -615,6 +658,27 @@ angular.module('myApp.view2', ['ngRoute'])
 		    }
 		}
 
+	    var chooseElevator2 = function (elevator, fl, dir) {
+		if (elevator.floor == fl ){ //we have arrived at floor button that called us
+		    elevator.requestState = 2;
+		} else if (elevator.direction != 0) { //on the move, possibly done requests
+		    if (elevator.queue.indexOf(fl) != -1){//going to a floor that needs a call, shift to state 1
+			elevator.requestState = 1;
+		    } else {//proceed to state 2, no other call to do besides get to target floor
+			elevator.requestState = 2;
+		    }
+		    
+		} else {//on the move to get to requested floor
+		    elevator.requestState = 1;
+		}
+		//alert("Elevator " + elevator.id+" requested");
+		if (dir > 0){
+		    registerElevatorWithDirection(elevator, fl, 1); // 1 is up floor button pushed
+		} else {
+		    registerElevatorWithDirection(elevator, fl, 0);// 0 is down floor button pushed
+		}
+		
+	    };
 		// Sets floor of elevator "closest" to call
 		//    - "closest" determined by FS value
 		this.answerCall = function (fl, dir) {
@@ -676,7 +740,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			    } else {//on the move to get to requested floor
 				elevator.requestState = 1;
 			    }
-			    alert("Elevator " + elevator.id+" requested");
+			    //alert("Elevator " + elevator.id+" requested");
 			    if (dir > 0){
 				registerElevatorWithDirection(elevator, fl, 1); // 1 is up floor button pushed
 			    } else {
@@ -691,11 +755,10 @@ angular.module('myApp.view2', ['ngRoute'])
 					//do nothing
 				} else{
 					if (el2.floor == fl && el2.requestState ==0){
-						chooseElevator(el2);
 						console.log(el1.requestState + " "+ el2.requestState);
 						el2.waitTime += .1;
 					} else if (el1.floor == fl && el1.requestState ==2){
-					console.log(el1.requestState + " " +el2.requestState);
+					    console.log(el1.requestState + " " +el2.requestState);
 						el1.waitTime += .1;
 					}else {
 						if (fs1 > fs2) {
