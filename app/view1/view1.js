@@ -10,7 +10,7 @@ angular.module('myApp.view1', ['ngRoute'])
 }])
 
 .controller('View1Ctrl', ['$scope', '$firebaseArray', function($scope, $firebaseArray) {
-  var database = firebase.database();
+  /*var database = firebase.database();
   var refDatabase = firebase.database().ref();
   var users = $firebaseArray(refDatabase.child('users'))
 
@@ -36,5 +36,5 @@ angular.module('myApp.view1', ['ngRoute'])
       console.log($scope.usernames)
     })
   }
-  update()
+  update()*/
 }]);

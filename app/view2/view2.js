@@ -690,9 +690,12 @@ angular.module('myApp.view2', ['ngRoute'])
 				if ((el1.queue.indexOf(fl) != -1 && el1.dirQueue.indexOf((fl*2)-1)) != -1 || (el2.queue.indexOf(fl) != -1 && el2.dirQueue.indexOf((fl*2)-1) != -1)){
 					//do nothing
 				} else{
-					if (el2.floor == fl && el2.requestState ==2){
+					if (el2.floor == fl && el2.requestState ==0){
+						chooseElevator(el2);
+						console.log(el1.requestState + " "+ el2.requestState);
 						el2.waitTime += .1;
 					} else if (el1.floor == fl && el1.requestState ==2){
+					console.log(el1.requestState + " " +el2.requestState);
 						el1.waitTime += .1;
 					}else {
 						if (fs1 > fs2) {
@@ -708,8 +711,10 @@ angular.module('myApp.view2', ['ngRoute'])
 					//do nothing
 				} else{
 					if (el2.floor == fl && el2.requestState ==2){
+						console.log(el1.requestState + " " +el2.requestState);
 						el2.waitTime += .1;
 					} else if (el1.floor == fl && el1.requestState ==2){
+						console.log(el1.requestState + " " +el2.requestState);
 						el1.waitTime += .1;
 					}else {
 						if (fs1 > fs2) {
