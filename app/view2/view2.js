@@ -487,7 +487,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			 } else {
 				 newDir = elevator.direction;
 			 }
-			 if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
+			 if ((elevator.queue.indexOf(fl) == -1) && (elevator.floor != fl)) {
 				 elevator.queue.push(fl);
 				 elevator.queue.sort();
 				 elevator.dirQueue.push(fl*2);
@@ -508,7 +508,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			 } else {
 				 newDir = elevator.direction;
 			 }
-			 if (elevator.queue.indexOf(fl) == -1 && elevator.floor != fl) {
+			 if ((elevator.queue.indexOf(fl) == -1) && (elevator.floor != fl)) {
 				 elevator.queue.push(fl);
 				 elevator.queue.sort();
 				 elevator.dirQueue.push((fl*2) - dirPushed);
@@ -687,7 +687,7 @@ angular.module('myApp.view2', ['ngRoute'])
 
 			// Choose elevator that is "closer"
 			if (dir > 0){
-				if ((el1.queue.indexOf(fl) != -1 && el1.dirQueue.indexOf((fl*2)-1)) != -1 || (el2.queue.indexOf(fl) != -1 && el2.dirQueue.indexOf((fl*2)-1) != -1)){
+				if (((el1.queue.indexOf(fl) != -1) && (el1.dirQueue.indexOf((fl*2)-1) != -1)) || (((el2.queue.indexOf(fl) != -1) && (el2.dirQueue.indexOf((fl*2)-1) != -1)))){
 					//do nothing
 				} else{
 					if (el2.floor == fl && el2.requestState ==0){
@@ -707,7 +707,7 @@ angular.module('myApp.view2', ['ngRoute'])
 					
 				}
 			} else{
-				if ((el1.queue.indexOf(fl) != -1 && el1.dirQueue.indexOf(fl*2) != -1 || (el2.queue.indexOf(fl) != -1 && el2.dirQueue.indexOf(fl*2) != -1))){
+				if (((el1.queue.indexOf(fl) != -1) && (el1.dirQueue.indexOf(fl*2) != -1)) || ((el2.queue.indexOf(fl) != -1) && (el2.dirQueue.indexOf(fl*2) != -1))){
 					//do nothing
 				} else{
 					if (el2.floor == fl && el2.requestState ==2){
