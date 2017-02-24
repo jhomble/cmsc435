@@ -68,8 +68,8 @@ angular.module('myApp.view2', ['ngRoute'])
 		updateAction(1, "Idle")
 		updateAction(2, "Idle")
 
-		$scope.openE1 = true;
-		$scope.openE2 = true;
+		$scope.openE1 = false;
+		$scope.openE2 = false;
 
 		$scope.e1b1 = "btn btn-default"
 		$scope.e1b2 = "btn btn-default"
