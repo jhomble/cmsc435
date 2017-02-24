@@ -197,16 +197,16 @@ angular.module('myApp.view2', ['ngRoute'])
 					})
 					
 					// Turn off Up:
-					/*
+					
 					if (el1.direction > 0) {
 						$scope.toggleButton(3, (el1.floor * 2) - 1, true);
 					        resetPassengers(el1.floor, 1);
-					}	*/		    
+					}			    
 					// Turn off Down:
-					/*if (el1.direction < 0) {
+					if (el1.direction < 0) {
 						$scope.toggleButton(3, el1.floor * 2, true);
 			                        resetPassengers(el1.floor, -1);
-					}*/
+					}
 					break;
 				case 2:
 					el2.waitingQue.forEach(function (floor, index) {
@@ -394,7 +394,7 @@ angular.module('myApp.view2', ['ngRoute'])
 					if (elevator.floor == floor) {
 						elevator.queue.splice(index, 1);
 						elevator.waitTime += 0.25;
-						 var temp = elevator.dirQueue.pop();
+						 var temp = elevator.dirQueue.shift();
 						 console.log("dirQueue has element" + temp);
 						 if (temp % 2 > 0 && temp != 0){
 							 $scope.toggleButton(3, (elevator.floor * 2) - 1, true);
@@ -696,16 +696,9 @@ angular.module('myApp.view2', ['ngRoute'])
 						el1.waitTime += .1;
 					}else {
 						if (fs1 > fs2) {
-						
 							chooseElevator(el1);
-						
-					   
 						} else {
-							
-								chooseElevator(el2);
-							
-							
-							
+							chooseElevator(el2);
 						}
 					}
 					
@@ -720,16 +713,9 @@ angular.module('myApp.view2', ['ngRoute'])
 						el1.waitTime += .1;
 					}else {
 						if (fs1 > fs2) {
-						
 							chooseElevator(el1);
-						
-					   
 						} else {
-							
 							chooseElevator(el2);
-							
-							
-							
 						}
 					}
 					
