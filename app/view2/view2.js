@@ -68,8 +68,8 @@ angular.module('myApp.view2', ['ngRoute'])
 		updateAction(1, "Idle")
 		updateAction(2, "Idle")
 
-		$scope.openE1 = true;
-		$scope.openE2 = true;
+		$scope.openE1 = false;
+		$scope.openE2 = false;
 
 		$scope.e1b1 = "btn btn-default"
 		$scope.e1b2 = "btn btn-default"
@@ -687,7 +687,7 @@ angular.module('myApp.view2', ['ngRoute'])
 
 			// Choose elevator that is "closer"
 			if (dir > 0){
-				if ((el1.queue.includes(fl) && el1.dirQueue.includes((fl*2)-1)) || (el2.queue.includes(fl) && el2.dirQueue.includes((fl*2)-1))){
+				if ((el1.queue.indexOf(fl) != -1 && el1.dirQueue.indexOf((fl*2)-1)) != -1 || (el2.queue.indexOf(fl) != -1 && el2.dirQueue.indexOf((fl*2)-1) != -1)){
 					//do nothing
 				} else{
 					if (el2.floor == fl && el2.requestState ==0){
@@ -707,7 +707,7 @@ angular.module('myApp.view2', ['ngRoute'])
 					
 				}
 			} else{
-				if ((el1.queue.includes(fl) && el1.dirQueue.includes(fl*2) || (el2.queue.includes(fl) && el2.dirQueue.includes(fl*2)))){
+				if ((el1.queue.indexOf(fl) != -1 && el1.dirQueue.indexOf(fl*2) != -1 || (el2.queue.indexOf(fl) != -1 && el2.dirQueue.indexOf(fl*2) != -1))){
 					//do nothing
 				} else{
 					if (el2.floor == fl && el2.requestState ==2){
