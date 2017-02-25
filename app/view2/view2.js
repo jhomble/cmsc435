@@ -250,7 +250,7 @@ angular.module('myApp.view2', ['ngRoute'])
 			switch (elevator) {
 				case 1:
 					console.log("Elevator 1 has state " + el1.requestState);
-					if (el1.requestState !=0){
+					if (el1.requestState !=0 || true){
 						el1.waitTime = 0.5;
 						switch (button) {
 							case 1:
@@ -320,7 +320,7 @@ angular.module('myApp.view2', ['ngRoute'])
 				case 2:
 					console.log("asd")
 					console.log("Elevator 2 has state " + el2.requestState);
-					if (el2.requestState !=0){
+					if (el2.requestState !=0 || true){
 						el2.waitTime = 0.5;
 						switch (button) {
 							case 1:
