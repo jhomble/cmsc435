@@ -1,8 +1,5 @@
 import sys
 # sys.path.extend(['./copct-master','./dananau-pyhop-195ab6320571'])
-
-from load_facility_demo import load_demo
-from facility_domain import causes, M
 import math
 
 
